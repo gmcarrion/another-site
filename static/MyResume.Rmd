@@ -1,0 +1,57 @@
+---
+title: "Resume"
+author: "gina"
+date: "12/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Gina Carrion
+ginacarrion@utexas.edu
+Austin, TX 78705 • (214) 604-7449
+EDUCATION
+The University of Texas at Austin Bachelor of Science, Cell and Molecular Biology Expected May 2020
+Business Minor: 18 Hours of Business Courses, McCombs
+Summer Institute
+Summer 2017
+The University of Seville Faculty-Led Study Abroad: 3 Hours of Biology Courses Summer 2018
+Overall GPA: 3.5808
+RESEARCH EXPERIENCE
+Undergraduate Research Assistant – Havird Lab, University of Texas at Austin Fall 2019 - Present
+• Researched the coevolution of mitochondrial genomes and nuclear genomes in different species of the plant
+genus, Silene
+• Isolated mitochondria and analyzed the respiration rates of species within the genus, Silene
+Undergraduate Research Assistant - Ryan Lab, University of Texas at Austin Fall 2018 – Summer 2019
+• Researched the communication behaviors and hormonal state displayed by Túngara frogs when exposed to
+multimodal stimulation
+• Compiled data using coding software to analyze and score the behaviors of frogs
+• Performed extraction and elution of hormones from Túngara frogs
+SKILLS
+• Micropipetting, preparing solutions and cleaning lab equipment, PCR, gel electrophoresis, protein and
+hormone extraction and purification, culture transfer and inoculation
+• Microsoft Word, PowerPoint, Excel (MIS 302F), RStudio
+LABORATORY COURSE WORK
+Bioinformatics and Computational Biology Fall 2019
+• Statistical software R
+Organic Chemistry Laboratory Fall 2019
+• Liquid-liquid extraction, fractional distillation, extraction and recrystallization
+Lab Experience in Genetics Fall 2018
+• Agarose and polyacrylamide gel electrophoresis, PCR, and western blot
+General Microbiology Lab Spring 2018
+• Inoculations, micropipette, bacterial transformation, and culture transfer
+Introduction to Chemical Practice Spring 2017
+• Titration, spectrophotometry, use of volumetric glassware, and use of pH meters
+LEADERSHIP EXPERIENCE
+University of Texas FIG Mentor – College of Natural Sciences Fall 2017- Fall 2018
+• Mentored and led first-year university students within the College of Natural Sciences
+• Provided information and introduced services and resources offered by the University
+of Texas for students
+• Fostered a welcoming community for first-year students to make connections with
+faculty and students on campus
+
+HONORS AND AWARDS
+• College of Natural Sciences University Honors Fall 2018, Spring 2019
+

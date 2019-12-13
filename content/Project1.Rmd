@@ -1,0 +1,204 @@
+---
+title: "Project1_gmc"
+author: "gina"
+date: "12/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ISwR)
+data("secher")
+library(HH)
+data("birthweight")
+birthweight
+library(tidyverse)
+```
+
+```{R}
+### changed the name of a column so that it could be joined more easily
+sech1 <- secher %>% dplyr::select(birthwt = bwt, bpd, ad, no)
+head(sech1)
+```
+
+```{R}
+### tidy data example
+pivgender <- pivot_wider(birthweight, names_from = "gender", values_from = "gender")
+head(pivgender)
+# i thought the data was tidy before the pivot wider but here is an example of what could have happened
+```
+
+```{R}
+### gave an observation number to the birthweight data set to help visualize in the joined dataset
+btwt <- birthweight %>% mutate(ID = row_number())
+head(btwt)
+```
+
+```{R}
+### Join data sets
+# For the data I picked, I wanted to keep all the variables so all the join functions seemed to work similarly, I picked full join
+fulldata <- sech1 %>% full_join(y = btwt, by = "birthwt")
+fdo <- fulldata %>% na.omit()
+head(fdo)
+#fdo drops a lot of data but it gives me birthweights that were present in both data sets
+```
+
+```{R}
+### filter() function
+fdo %>% filter(gender == "M")
+# gave only observations from the male gender
+fdo %>% filter(momsage == "22" & gender =="F")
+# gave functions that had a moms age of 22 and gender of female
+```
+
+```{R}
+### arrange() function
+# put the dataframe in a certain order according to a variable
+fdo %>% arrange(desc(birthwt), desc(term))
+fdo %>% arrange(desc(term), momsage)
+```
+
+```{R}
+### select() function
+# chose only a few columns to look at a time
+fdo %>% select(birthwt, momsage, ad)
+```
+
+```{R}
+### group_by() function
+# according to birthweight, pulled the mean and standard deviation of the birthweights
+fdo %>% group_by(birthwt) %>% summarize(mean_bwt = mean(birthwt, na.rm = T), sd_bwt = sd(birthwt, na.rm=T))
+```
+
+```{R}
+### ggplots
+fdo %>% group_by(birthwt, momsage) %>%
+  summarize(mean_bwt=mean(birthwt, na.rm=T),
+              sd_bwt=sd(birthwt, na.rm=T), n=n()) %>%
+  ggplot(aes(momsage,mean_bwt))+geom_bar(stat="identity")
+```
+
+```{R}
+## ggplots
+# IN this plot you can see the birthweight ompared to the term broken down by the moms age when the child was born
+ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$term))+
+  geom_point()+
+  ggtitle("Birthweight vs Term")+
+  xlab("Birthweight")+ ylab("Term")+
+  facet_wrap(~fdo$momsage)
+```
+
+```{R}
+# This plot shows that there is a general trend between the birthweight and head size of the babies
+# There is not an apparent trend with the birthweight or head size and what term the babies were born in, some of the low weight babies were born earlier except for one outlier
+ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$bpd, color = fdo$term))+
+  geom_point(stat = "summary", fun.y="mean")+
+  ggtitle("Birthweight vs BPD by Term")+
+  xlab("Birthweight")+ ylab("BPD")
+```
+
+```{R}
+### summary functions
+# mean
+fdo %>% summarize(mean_bwt = mean(birthwt),mean_bpd = mean(bpd), mean_ad = mean(ad),mean_momsage = mean(momsage), mean_term = mean(term))
+```
+
+```{R}
+# sd
+fdo %>% summarize(sd_bwt = sd(birthwt))
+fdo %>% summarize(sd_bwt = sd(birthwt), sd_bpd = sd(bpd), sd_ad = sd(ad), sd_momsage = sd(momsage), sd_term=sd(term))
+```
+
+```{R}
+# var
+fdo %>% summarize(var_bwt = var(birthwt),var_bpd = var(bpd), var_ad = var(ad), var_momsage = var(momsage), var_term = var(term))
+```
+
+```{R}
+# min
+fdo %>% summarize(min_bwt = min(birthwt), min_bpd = min(bpd), min_ad = min(ad), min_momsage = min(momsage), min_term = min(term))
+```
+
+```{R}
+# max
+fdo %>% summarize(max_bwt = max(birthwt), max_bpd = max(bpd), max_ad = max(ad), max_momsage = max(momsage), max_term = max(term))
+```
+
+```{R}
+# n_dinstinct
+fdo %>% summarize(n_distinct(birthwt))
+fdo %>% summarize(n_distinct(bpd))
+fdo %>% summarize(n_distinct(ad))                 
+fdo %>% summarize(n_distinct(momsage))
+fdo %>% summarize(n_distinct(term))
+```
+
+```{R}
+# cor
+fdo %>% summarize(cor(birthwt, term))
+fdo %>% summarize(cor(birthwt, bpd))
+fdo %>% summarize(cor(birthwt, ad))
+fdo %>% summarize(cor(birthwt, momsage))
+```
+
+```{R}
+### covariance
+fdo%>%select_if(is.numeric)%>%cov
+```
+
+```{R}
+# corrleation
+# the columns with high correlation have values closer to 1, these values represent that the two variables are highly correlated
+# for example, babies with high birthweights tend to have larger heads
+# there is a negative correlation between birthweight and moms age which means that babies with higher birthweights were tpically born to younger moms
+fdo%>%select_if(is.numeric)%>% cor()%>%round(2)
+```
+
+```{R}
+#eigenvalues
+# the eigen vectors show the direction that the data has the most variance
+eig1<-fdo%>%select(birthwt, bpd, term, ad, momsage)%>%cor%>%eigen()
+eig1
+```
+
+```{R}
+#PCA
+fdoPCA <- fdo %>% select(-no, -ID, -gender)
+head(fdoPCA)
+```
+
+```{R}
+# Scale the data 
+fdoPCA_scale<-fdoPCA%>%select_if(is.numeric)%>%scale
+PCA <- princomp(fdoPCA_scale)
+summary(PCA, loadings=T)
+```
+
+```{R}
+# convert eigenvector to eigen value
+eigvalue <- PCA$sdev^2
+```
+
+```{R}
+# this shows the proportion of variation of each principle component
+variation=round(eigvalue/sum(eigvalue),2) 
+```
+
+```{R}
+# deciding how many principal components to keep
+# Based on the plot, I will keep to PCs
+ggplot()+geom_bar(aes(y=variation,x=1:5),stat="identity")+xlab("")+geom_path(aes(y=variation,x=1:5))+
+  geom_text(aes(x=1:5,y=variation,label=round(variation,2)),vjust=1:5,col="white",size=5)+
+  scale_y_continuous(breaks=seq(0,.6,.2),labels = scales::percent)+
+  scale_x_continuous(breaks=1:10)
+```
+
+```{R}
+# visualizing the data
+yeet <-data.frame(PC1=PCA$scores[,1], PC2=PCA$scores[,2])
+ggplot(yeet,aes(PC1, PC2))+geom_point()
+```
+
+
+
+

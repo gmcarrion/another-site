@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gina Carrion" />
+    <meta name="description" content="Describe your website">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Project1_gmc</title>
+    <meta name="generator" content="Hugo 0.60.1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/project1/">Project1_gmc</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 1, 0001
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<pre class="r"><code>### changed the name of a column so that it could be joined more easily
+sech1 &lt;- secher %&gt;% dplyr::select(birthwt = bwt, bpd, ad, no)
+head(sech1)</code></pre>
+<pre><code>##   birthwt bpd  ad no
+## 1    2350  88  92  1
+## 2    2450  91  98  2
+## 3    3300  94 110  3
+## 4    1800  84  89  4
+## 5    2900  89  97  5
+## 6    3500 100 110  6</code></pre>
+<pre class="r"><code>### tidy data example
+pivgender &lt;- pivot_wider(birthweight, names_from = &quot;gender&quot;, values_from = &quot;gender&quot;)
+head(pivgender)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##   momsage birthwt  term M     F    
+##     &lt;int&gt;   &lt;int&gt; &lt;int&gt; &lt;fct&gt; &lt;fct&gt;
+## 1      27    3650    41 M     &lt;NA&gt; 
+## 2      26    2950    37 &lt;NA&gt;  F    
+## 3      28    3210    40 &lt;NA&gt;  F    
+## 4      32    4420    42 M     &lt;NA&gt; 
+## 5      30    3330    40 M     &lt;NA&gt; 
+## 6      26    2950    40 M     &lt;NA&gt;</code></pre>
+<pre class="r"><code># i thought the data was tidy before the pivot wider but here is an example of what could have happened</code></pre>
+<pre class="r"><code>### gave an observation number to the birthweight data set to help visualize in the joined dataset
+btwt &lt;- birthweight %&gt;% mutate(ID = row_number())
+head(btwt)</code></pre>
+<pre><code>##   momsage birthwt term gender ID
+## 1      27    3650   41      M  1
+## 2      26    2950   37      F  2
+## 3      28    3210   40      F  3
+## 4      32    4420   42      M  4
+## 5      30    3330   40      M  5
+## 6      26    2950   40      M  6</code></pre>
+<pre class="r"><code>### Join data sets
+# For the data I picked, I wanted to keep all the variables so all the join functions seemed to work similarly, I picked full join
+fulldata &lt;- sech1 %&gt;% full_join(y = btwt, by = &quot;birthwt&quot;)
+fdo &lt;- fulldata %&gt;% na.omit()
+head(fdo)</code></pre>
+<pre><code>##    birthwt bpd  ad no momsage term gender ID
+## 5     2900  89  97  5      27   40      F 12
+## 6     3500 100 110  6      23   41      M 18
+## 7     3500 100 110  6      22   40      F 34
+## 8     3500 100 110  6      26   39      F 47
+## 9     2700  90 110  7      22   40      M 40
+## 10    2950  92 100  8      26   37      F  2</code></pre>
+<pre class="r"><code>#fdo drops a lot of data but it gives me birthweights that were present in both data sets</code></pre>
+<pre class="r"><code>### filter() function
+fdo %&gt;% filter(gender == &quot;M&quot;)</code></pre>
+<pre><code>##    birthwt bpd  ad no momsage term gender ID
+## 1     3500 100 110  6      23   41      M 18
+## 2     2700  90 110  7      22   40      M 40
+## 3     2950  92 100  8      26   40      M  6
+## 4     3400  94 110 21      27   40      M 35
+## 5     3400  88 113 22      27   40      M 35
+## 6     3650  94 107 25      27   41      M  1
+## 7     3500  96 111 26      23   41      M 18
+## 8     2700  89 105 29      22   40      M 40
+## 9     3100  92 112 33      27   38      M 24
+## 10    3600  84 116 35      27   39      M 51
+## 11    3100  91 102 36      27   38      M 24
+## 12    3100  92 109 39      27   38      M 24
+## 13    2950  93 108 43      26   40      M  6
+## 14    3500  95 102 46      23   41      M 18
+## 15    3250  96 102 49      30   40      M 42
+## 16    3600  97 112 53      27   39      M 51
+## 17    3050  90 100 56      25   42      M 29
+## 18    2950  94 108 62      26   40      M  6
+## 19    3100  94 110 66      27   38      M 24
+## 20    4200  97 133 68      26   41      M 25
+## 21    3100  92 119 72      27   38      M 24
+## 22    2950  92 107 73      26   40      M  6
+## 23    2950  91 100 84      26   40      M  6
+## 24    2700  92 102 86      22   40      M 40
+## 25    3150  91 107 96      31   41      M 31
+## 26    3150  91 107 96      23   39      M 39</code></pre>
+<pre class="r"><code># gave only observations from the male gender
+fdo %&gt;% filter(momsage == &quot;22&quot; &amp; gender ==&quot;F&quot;)</code></pre>
+<pre><code>##   birthwt bpd  ad no momsage term gender ID
+## 1    3500 100 110  6      22   40      F 34
+## 2    3500  96 111 26      22   40      F 34
+## 3    3500  95 102 46      22   40      F 34</code></pre>
+<pre class="r"><code># gave functions that had a moms age of 22 and gender of female</code></pre>
+<pre class="r"><code>### arrange() function
+# put the dataframe in a certain order according to a variable
+fdo %&gt;% arrange(desc(birthwt), desc(term))</code></pre>
+<pre><code>##    birthwt bpd  ad  no momsage term gender ID
+## 1     4200  97 133  68      26   41      M 25
+## 2     3650  94 107  25      27   41      M  1
+## 3     3600  84 116  35      25   41      F 14
+## 4     3600  97 112  53      25   41      F 14
+## 5     3600  84 116  35      27   39      M 51
+## 6     3600  97 112  53      27   39      M 51
+## 7     3550  93 108  27      23   40      F 21
+## 8     3550  92 116 105      23   40      F 21
+## 9     3500 100 110   6      23   41      M 18
+## 10    3500  96 111  26      23   41      M 18
+## 11    3500  95 102  46      23   41      M 18
+## 12    3500 100 110   6      22   40      F 34
+## 13    3500  96 111  26      22   40      F 34
+## 14    3500  95 102  46      22   40      F 34
+## 15    3500 100 110   6      26   39      F 47
+## 16    3500  96 111  26      26   39      F 47
+## 17    3500  95 102  46      26   39      F 47
+## 18    3400  94 110  21      27   40      M 35
+## 19    3400  88 113  22      27   40      M 35
+## 20    3250  96 102  49      30   40      M 42
+## 21    3150  91 107  96      31   41      M 31
+## 22    3150  91 107  96      23   39      M 39
+## 23    3100  92 112  33      27   38      M 24
+## 24    3100  91 102  36      27   38      M 24
+## 25    3100  92 109  39      27   38      M 24
+## 26    3100  94 110  66      27   38      M 24
+## 27    3100  92 119  72      27   38      M 24
+## 28    3050  90 100  56      25   42      M 29
+## 29    2950  92 100   8      26   40      M  6
+## 30    2950  93 108  43      26   40      M  6
+## 31    2950  94 108  62      26   40      M  6
+## 32    2950  92 107  73      26   40      M  6
+## 33    2950  91 100  84      26   40      M  6
+## 34    2950  92 100   8      26   37      F  2
+## 35    2950  93 108  43      26   37      F  2
+## 36    2950  94 108  62      26   37      F  2
+## 37    2950  92 107  73      26   37      F  2
+## 38    2950  91 100  84      26   37      F  2
+## 39    2900  89  97   5      27   40      F 12
+## 40    2900  91 101  16      27   40      F 12
+## 41    2900  84 104  58      27   40      F 12
+## 42    2900  93 110  67      27   40      F 12
+## 43    2900  92 108  98      27   40      F 12
+## 44    2900  92 104 107      27   40      F 12
+## 45    2850  91 105  85      29   36      F 15
+## 46    2700  90 110   7      22   40      M 40
+## 47    2700  89 105  29      22   40      M 40
+## 48    2700  92 102  86      22   40      M 40</code></pre>
+<pre class="r"><code>fdo %&gt;% arrange(desc(term), momsage)</code></pre>
+<pre><code>##    birthwt bpd  ad  no momsage term gender ID
+## 1     3050  90 100  56      25   42      M 29
+## 2     3500 100 110   6      23   41      M 18
+## 3     3500  96 111  26      23   41      M 18
+## 4     3500  95 102  46      23   41      M 18
+## 5     3600  84 116  35      25   41      F 14
+## 6     3600  97 112  53      25   41      F 14
+## 7     4200  97 133  68      26   41      M 25
+## 8     3650  94 107  25      27   41      M  1
+## 9     3150  91 107  96      31   41      M 31
+## 10    3500 100 110   6      22   40      F 34
+## 11    2700  90 110   7      22   40      M 40
+## 12    3500  96 111  26      22   40      F 34
+## 13    2700  89 105  29      22   40      M 40
+## 14    3500  95 102  46      22   40      F 34
+## 15    2700  92 102  86      22   40      M 40
+## 16    3550  93 108  27      23   40      F 21
+## 17    3550  92 116 105      23   40      F 21
+## 18    2950  92 100   8      26   40      M  6
+## 19    2950  93 108  43      26   40      M  6
+## 20    2950  94 108  62      26   40      M  6
+## 21    2950  92 107  73      26   40      M  6
+## 22    2950  91 100  84      26   40      M  6
+## 23    2900  89  97   5      27   40      F 12
+## 24    2900  91 101  16      27   40      F 12
+## 25    3400  94 110  21      27   40      M 35
+## 26    3400  88 113  22      27   40      M 35
+## 27    2900  84 104  58      27   40      F 12
+## 28    2900  93 110  67      27   40      F 12
+## 29    2900  92 108  98      27   40      F 12
+## 30    2900  92 104 107      27   40      F 12
+## 31    3250  96 102  49      30   40      M 42
+## 32    3150  91 107  96      23   39      M 39
+## 33    3500 100 110   6      26   39      F 47
+## 34    3500  96 111  26      26   39      F 47
+## 35    3500  95 102  46      26   39      F 47
+## 36    3600  84 116  35      27   39      M 51
+## 37    3600  97 112  53      27   39      M 51
+## 38    3100  92 112  33      27   38      M 24
+## 39    3100  91 102  36      27   38      M 24
+## 40    3100  92 109  39      27   38      M 24
+## 41    3100  94 110  66      27   38      M 24
+## 42    3100  92 119  72      27   38      M 24
+## 43    2950  92 100   8      26   37      F  2
+## 44    2950  93 108  43      26   37      F  2
+## 45    2950  94 108  62      26   37      F  2
+## 46    2950  92 107  73      26   37      F  2
+## 47    2950  91 100  84      26   37      F  2
+## 48    2850  91 105  85      29   36      F 15</code></pre>
+<pre class="r"><code>### select() function
+# chose only a few columns to look at a time
+fdo %&gt;% select(birthwt, momsage, ad)</code></pre>
+<pre><code>##     birthwt momsage  ad
+## 5      2900      27  97
+## 6      3500      23 110
+## 7      3500      22 110
+## 8      3500      26 110
+## 9      2700      22 110
+## 10     2950      26 100
+## 11     2950      26 100
+## 19     2900      27 101
+## 24     3400      27 110
+## 25     3400      27 113
+## 28     3650      27 107
+## 29     3500      23 111
+## 30     3500      22 111
+## 31     3500      26 111
+## 32     3550      23 108
+## 34     2700      22 105
+## 38     3100      27 112
+## 40     3600      25 116
+## 41     3600      27 116
+## 42     3100      27 102
+## 45     3100      27 109
+## 49     2950      26 108
+## 50     2950      26 108
+## 53     3500      23 102
+## 54     3500      22 102
+## 55     3500      26 102
+## 58     3250      30 102
+## 62     3600      25 112
+## 63     3600      27 112
+## 66     3050      25 100
+## 68     2900      27 104
+## 72     2950      26 108
+## 73     2950      26 108
+## 77     3100      27 110
+## 78     2900      27 110
+## 79     4200      26 133
+## 83     3100      27 119
+## 84     2950      26 107
+## 85     2950      26 107
+## 96     2950      26 100
+## 97     2950      26 100
+## 98     2850      29 105
+## 99     2700      22 102
+## 109    3150      31 107
+## 110    3150      23 107
+## 112    2900      27 108
+## 119    3550      23 116
+## 121    2900      27 104</code></pre>
+<pre class="r"><code>### group_by() function
+# according to birthweight, pulled the mean and standard deviation of the birthweights
+fdo %&gt;% group_by(birthwt) %&gt;% summarize(mean_bwt = mean(birthwt, na.rm = T), sd_bwt = sd(birthwt, na.rm=T))</code></pre>
+<pre><code>## # A tibble: 14 x 3
+##    birthwt mean_bwt sd_bwt
+##      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+##  1    2700     2700      0
+##  2    2850     2850     NA
+##  3    2900     2900      0
+##  4    2950     2950      0
+##  5    3050     3050     NA
+##  6    3100     3100      0
+##  7    3150     3150      0
+##  8    3250     3250     NA
+##  9    3400     3400      0
+## 10    3500     3500      0
+## 11    3550     3550      0
+## 12    3600     3600      0
+## 13    3650     3650     NA
+## 14    4200     4200     NA</code></pre>
+<pre class="r"><code>### ggplots
+fdo %&gt;% group_by(birthwt, momsage) %&gt;%
+  summarize(mean_bwt=mean(birthwt, na.rm=T),
+              sd_bwt=sd(birthwt, na.rm=T), n=n()) %&gt;%
+  ggplot(aes(momsage,mean_bwt))+geom_bar(stat=&quot;identity&quot;)</code></pre>
+<p><img src="/Project1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>## ggplots
+# IN this plot you can see the birthweight ompared to the term broken down by the moms age when the child was born
+ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$term))+
+  geom_point()+
+  ggtitle(&quot;Birthweight vs Term&quot;)+
+  xlab(&quot;Birthweight&quot;)+ ylab(&quot;Term&quot;)+
+  facet_wrap(~fdo$momsage)</code></pre>
+<p><img src="/Project1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code># This plot shows that there is a general trend between the birthweight and head size of the babies
+# There is not an apparent trend with the birthweight or head size and what term the babies were born in, some of the low weight babies were born earlier except for one outlier
+ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$bpd, color = fdo$term))+
+  geom_point(stat = &quot;summary&quot;, fun.y=&quot;mean&quot;)+
+  ggtitle(&quot;Birthweight vs BPD by Term&quot;)+
+  xlab(&quot;Birthweight&quot;)+ ylab(&quot;BPD&quot;)</code></pre>
+<p><img src="/Project1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>### summary functions
+# mean
+fdo %&gt;% summarize(mean_bwt = mean(birthwt),mean_bpd = mean(bpd), mean_ad = mean(ad),mean_momsage = mean(momsage), mean_term = mean(term))</code></pre>
+<pre><code>##   mean_bwt mean_bpd mean_ad mean_momsage mean_term
+## 1     3200  92.6875  107.75     25.64583  39.47917</code></pre>
+<pre class="r"><code># sd
+fdo %&gt;% summarize(sd_bwt = sd(birthwt))</code></pre>
+<pre><code>##    sd_bwt
+## 1 329.248</code></pre>
+<pre class="r"><code>fdo %&gt;% summarize(sd_bwt = sd(birthwt), sd_bpd = sd(bpd), sd_ad = sd(ad), sd_momsage = sd(momsage), sd_term=sd(term))</code></pre>
+<pre><code>##    sd_bwt   sd_bpd    sd_ad sd_momsage  sd_term
+## 1 329.248 3.573878 6.231355   2.128725 1.352532</code></pre>
+<pre class="r"><code># var
+fdo %&gt;% summarize(var_bwt = var(birthwt),var_bpd = var(bpd), var_ad = var(ad), var_momsage = var(momsage), var_term = var(term))</code></pre>
+<pre><code>##    var_bwt  var_bpd   var_ad var_momsage var_term
+## 1 108404.3 12.77261 38.82979    4.531472 1.829344</code></pre>
+<pre class="r"><code># min
+fdo %&gt;% summarize(min_bwt = min(birthwt), min_bpd = min(bpd), min_ad = min(ad), min_momsage = min(momsage), min_term = min(term))</code></pre>
+<pre><code>##   min_bwt min_bpd min_ad min_momsage min_term
+## 1    2700      84     97          22       36</code></pre>
+<pre class="r"><code># max
+fdo %&gt;% summarize(max_bwt = max(birthwt), max_bpd = max(bpd), max_ad = max(ad), max_momsage = max(momsage), max_term = max(term))</code></pre>
+<pre><code>##   max_bwt max_bpd max_ad max_momsage max_term
+## 1    4200     100    133          31       42</code></pre>
+<pre class="r"><code># n_dinstinct
+fdo %&gt;% summarize(n_distinct(birthwt))</code></pre>
+<pre><code>##   n_distinct(birthwt)
+## 1                  14</code></pre>
+<pre class="r"><code>fdo %&gt;% summarize(n_distinct(bpd))</code></pre>
+<pre><code>##   n_distinct(bpd)
+## 1              12</code></pre>
+<pre class="r"><code>fdo %&gt;% summarize(n_distinct(ad))                 </code></pre>
+<pre><code>##   n_distinct(ad)
+## 1             16</code></pre>
+<pre class="r"><code>fdo %&gt;% summarize(n_distinct(momsage))</code></pre>
+<pre><code>##   n_distinct(momsage)
+## 1                   8</code></pre>
+<pre class="r"><code>fdo %&gt;% summarize(n_distinct(term))</code></pre>
+<pre><code>##   n_distinct(term)
+## 1                7</code></pre>
+<pre class="r"><code># cor
+fdo %&gt;% summarize(cor(birthwt, term))</code></pre>
+<pre><code>##   cor(birthwt, term)
+## 1          0.3487821</code></pre>
+<pre class="r"><code>fdo %&gt;% summarize(cor(birthwt, bpd))</code></pre>
+<pre><code>##   cor(birthwt, bpd)
+## 1         0.4086464</code></pre>
+<pre class="r"><code>fdo %&gt;% summarize(cor(birthwt, ad))</code></pre>
+<pre><code>##   cor(birthwt, ad)
+## 1        0.5962993</code></pre>
+<pre class="r"><code>fdo %&gt;% summarize(cor(birthwt, momsage))</code></pre>
+<pre><code>##   cor(birthwt, momsage)
+## 1            -0.1411602</code></pre>
+<pre class="r"><code>### covariance
+fdo%&gt;%select_if(is.numeric)%&gt;%cov</code></pre>
+<pre><code>##              birthwt         bpd           ad           no     momsage
+## birthwt 108404.25532 480.8510638 1223.4042553 -2054.255319 -98.9361702
+## bpd        480.85106  12.7726064    3.3882979   -17.942819  -1.5598404
+## ad        1223.40426   3.3882979   38.8297872     9.845745  -0.5585106
+## no       -2054.25532 -17.9428191    9.8457447   868.942819  13.6875000
+## momsage    -98.93617  -1.5598404   -0.5585106    13.687500   4.5314716
+## term       155.31915   0.3444149    0.8670213    -4.876330  -0.7841312
+## ID        1715.95745   7.7300532   20.6648936   -75.793883  -5.0421099
+##                term          ID
+## birthwt 155.3191489 1715.957447
+## bpd       0.3444149    7.730053
+## ad        0.8670213   20.664894
+## no       -4.8763298  -75.793883
+## momsage  -0.7841312   -5.042110
+## term      1.8293440    3.060727
+## ID        3.0607270  227.425089</code></pre>
+<pre class="r"><code># corrleation
+# the columns with high correlation have values closer to 1, these values represent that the two variables are highly correlated
+# for example, babies with high birthweights tend to have larger heads
+# there is a negative correlation between birthweight and moms age which means that babies with higher birthweights were tpically born to younger moms
+fdo%&gt;%select_if(is.numeric)%&gt;% cor()%&gt;%round(2)</code></pre>
+<pre><code>##         birthwt   bpd    ad    no momsage  term    ID
+## birthwt    1.00  0.41  0.60 -0.21   -0.14  0.35  0.35
+## bpd        0.41  1.00  0.15 -0.17   -0.21  0.07  0.14
+## ad         0.60  0.15  1.00  0.05   -0.04  0.10  0.22
+## no        -0.21 -0.17  0.05  1.00    0.22 -0.12 -0.17
+## momsage   -0.14 -0.21 -0.04  0.22    1.00 -0.27 -0.16
+## term       0.35  0.07  0.10 -0.12   -0.27  1.00  0.15
+## ID         0.35  0.14  0.22 -0.17   -0.16  0.15  1.00</code></pre>
+<pre class="r"><code>#eigenvalues
+# the eigen vectors show the direction that the data has the most variance
+eig1&lt;-fdo%&gt;%select(birthwt, bpd, term, ad, momsage)%&gt;%cor%&gt;%eigen()
+eig1</code></pre>
+<pre><code>## eigen() decomposition
+## $values
+## [1] 2.0065003 1.1163741 0.9082117 0.6784697 0.2904443
+## 
+## $vectors
+##            [,1]        [,2]        [,3]       [,4]        [,5]
+## [1,] -0.6184658  0.23363701  0.07662232  0.1071285  0.73862464
+## [2,] -0.4087746 -0.02249414 -0.77117892  0.3764670 -0.30976280
+## [3,] -0.3706904 -0.47429467  0.56374741  0.4859185 -0.28931864
+## [4,] -0.4782330  0.50061044  0.22776794 -0.4484836 -0.51736508
+## [5,]  0.2903193  0.68508504  0.17240279  0.6399545 -0.08431337</code></pre>
+<pre class="r"><code>#PCA
+fdoPCA &lt;- fdo %&gt;% select(-no, -ID, -gender)
+head(fdoPCA)</code></pre>
+<pre><code>##    birthwt bpd  ad momsage term
+## 5     2900  89  97      27   40
+## 6     3500 100 110      23   41
+## 7     3500 100 110      22   40
+## 8     3500 100 110      26   39
+## 9     2700  90 110      22   40
+## 10    2950  92 100      26   37</code></pre>
+<pre class="r"><code># Scale the data 
+fdoPCA_scale&lt;-fdoPCA%&gt;%select_if(is.numeric)%&gt;%scale
+PCA &lt;- princomp(fdoPCA_scale)
+summary(PCA, loadings=T)</code></pre>
+<pre><code>## Importance of components:
+##                           Comp.1    Comp.2    Comp.3    Comp.4     Comp.5
+## Standard deviation     1.4016769 1.0455220 0.9430221 0.8150674 0.53328542
+## Proportion of Variance 0.4013001 0.2232748 0.1816423 0.1356939 0.05808885
+## Cumulative Proportion  0.4013001 0.6245749 0.8062172 0.9419111 1.00000000
+## 
+## Loadings:
+##         Comp.1 Comp.2 Comp.3 Comp.4 Comp.5
+## birthwt  0.618  0.234         0.107  0.739
+## bpd      0.409        -0.771  0.376 -0.310
+## ad       0.478  0.501  0.228 -0.448 -0.517
+## momsage -0.290  0.685  0.172  0.640       
+## term     0.371 -0.474  0.564  0.486 -0.289</code></pre>
+<pre class="r"><code># convert eigenvector to eigen value
+eigvalue &lt;- PCA$sdev^2</code></pre>
+<pre class="r"><code># this shows the proportion of variation of each principle component
+variation=round(eigvalue/sum(eigvalue),2) </code></pre>
+<pre class="r"><code># deciding how many principal components to keep
+# Based on the plot, I will keep to PCs
+ggplot()+geom_bar(aes(y=variation,x=1:5),stat=&quot;identity&quot;)+xlab(&quot;&quot;)+geom_path(aes(y=variation,x=1:5))+
+  geom_text(aes(x=1:5,y=variation,label=round(variation,2)),vjust=1:5,col=&quot;white&quot;,size=5)+
+  scale_y_continuous(breaks=seq(0,.6,.2),labels = scales::percent)+
+  scale_x_continuous(breaks=1:10)</code></pre>
+<p><img src="/Project1_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<pre class="r"><code># visualizing the data
+yeet &lt;-data.frame(PC1=PCA$scores[,1], PC2=PCA$scores[,2])
+ggplot(yeet,aes(PC1, PC2))+geom_point()</code></pre>
+<p><img src="/Project1_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+
+              <hr>
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

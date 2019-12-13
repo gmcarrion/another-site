@@ -1,0 +1,336 @@
+---
+title: "Project 2"
+author: "Gina"
+date: "12/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
+#install.packages("DAAG")
+library(DAAG)
+data("mifem")
+mifem
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+This is a data frame with 1295 rows and 10 columns.  The data set contains information about the mortality outcomes for females suffering myocardial infarction. A myocradial infarction is a heart attack and I will refer to it as that throughout the project. It contains a binary variable, 'outcome' in which the patient either lived or died. The data set contains 2 numerical variable,'age' the age of the onset of theheart attack, and 'yronset' the year of the onset of the heart attack. The data set contains 6 categorical variables 'premi' previous myocardial infarctions, 'smstat' smoking status, 'diabetes' diabetes, 'highbp' high blood pressure, 'hichol' high cholesterol, 'angina' angina, 'stroke' if they previouly has a stroke. Each categorical variable has levels 'y', yes, 'n', no, 'nk', not known.  Smoking status has the categories 
+
+```{R}
+class_diag<-function(probs,truth){
+  tab<-table(factor(probs>.5,levels=c("FALSE","TRUE")),truth)
+  acc=sum(diag(tab))/sum(tab)
+  sens=tab[2,2]/colSums(tab)[2]
+  spec=tab[1,1]/colSums(tab)[1]
+  ppv=tab[2,2]/rowSums(tab)[2]
+  if(is.numeric(truth)==FALSE & is.logical(truth)==FALSE) truth<-as.numeric(truth)-1
+    #CALCULATE EXACT AUC
+  ord<-order(probs, decreasing=TRUE)
+  probs <- probs[ord]; truth <- truth[ord]
+  TPR=cumsum(truth)/max(1,sum(truth))
+  FPR=cumsum(!truth)/max(1,sum(!truth))
+  dup<-c(probs[-1]>=probs[-length(probs)], FALSE)
+  TPR<-c(0,TPR[!dup],1); FPR<-c(0,FPR[!dup],1)
+  n <- length(TPR)
+  auc<- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+  data.frame(acc,sens,spec,ppv,auc)
+} 
+```
+This is a data frame with 1295 rows and 10 columns.  
+The data set contains information about the mortality outcomes for females suffering myocardial infarction.
+A myocradial infarction is a heart attack and I will refer to it as that throughout the project.
+It contains a bindary variable, 'outcome' in which the patient either lived or died.
+The data set contains 2 numerical variable,'age' the age of the onset of the myocardial infarction, and 'yronset' the year of the onset of the myocardial infarction.
+The data set contains 6 categorical variables 'premi' previous myocardial infarctions, 'smstat' smoking status, 'diabetes' diabetes, 'highbp' high blood pressure, 'hichol' high cholesterol, 'angina' angina, 'stroke' if they previouly has a stroke.
+Each categorical variable has levels 'y', yes, 'n', no, 'nk', not known.
+
+```{R}
+mifem %>% group_by(outcome) %>% summarize(count = n())
+```
+
+```{R}
+d1 <- subset(mifem, premi!="nk")
+d2 <- subset(d1, smstat!= "nk")
+d3 <- subset(d2, diabetes!= "nk")
+d4 <- d3 %>% mutate(premi=recode(premi, 
+                                        `y`= "d"))
+d5 <- d4 %>% mutate(diabetes=recode(diabetes, 
+                                       `y`= "d"))
+
+data <- d5 %>% mutate(outcome=recode(outcome, 
+                                          `dead`= 0,
+                                         `live` = 1))%>%na.omit()
+head(data)
+```
+
+```{R}
+man1<-manova(cbind(age,yronset)~smstat, data=data)
+summary(man1)
+summary.aov(man1)
+data%>%group_by(smstat)%>%summarize(mean(age),mean(yronset))
+pairwise.t.test(data$age,data$smstat, p.adj="none")
+pairwise.t.test(data$yronset,data$smstat, p.adj="none")
+```
+A one-way multivariate analysis of variance (MANOVA) was conducted to determine the effect of the smoking status of a female patient who had a heart attack (ex smoker (x), nonsmoker(n), current smoker (c)) on two dependent variables (age and the year the heart attack happened). 
+Significant differences were found among the three smoking statuses on the two dependent measures, Pillai trace = .073, pseudo F(4, 2320) = 21.983, p < 0.0001.
+
+Univariate analyses of variance (ANOVAs) for each dependent variable were conducted as follow-up tests to the MANOVA, using the Bonferroni method for controlling Type I error rates for multiple comparisons. The univariate ANOVAs for age was also significant, F(2, 1160) = 43.755,  p < 0.0001, while the univariate ANOVA for the year onset was not significant, F(2, 1160) = 1.6265,  p > 0.0001.
+
+Post hoc analysis was performed conducting pairwise comparisons to determine which smoking status differed in age and year of onset.  Only two of the smoking statuses were found to differ from the others in terms of age, while the other were not significantly different adjusting for multiple comparisons (bonferroni).
+
+There were nine tests conducted on this dataset. 
+```{R}
+# Probability of at least one Type 1 error
+1-(1-0.05)^9
+# 0.3697506
+# 36.97506% chance of a Type I error
+
+# Adjusted significance level
+0.05/9
+# 0.0056 is the adjusted significance level
+```
+MANOVA assumptions 1) Random samples, independent observations 2) Independent samples 3) Normal distrubution or large sample size
+4) equal variance
+The assumptions of the MANOVA were likely met because the samples were random and independent, there was a large sample size (1163 observations), however, the equal variance assumption may not have been met because the pairwise comparisons did not all yield significant effects.
+
+```{R}
+# Randomization PERMANOVA
+library(vegan)
+dists<-data %>% dplyr::select(age, yronset) %>% dist()
+adonis(dists~smstat,data=data)
+
+SST <- sum(dists^2)/150
+SSW <-data %>% group_by(smstat)%>% dplyr::select(age,yronset) %>%
+  do(d=dist(.[2:3],"euclidean"))%>%ungroup()%>%
+  summarize(sum(d[[1]]^2)/50 + sum(d[[2]]^2)/50+ sum(d[[3]]^2)/50)%>%pull
+F_obs<-((SST-SSW)/2)/(SSW/147) 
+
+Fs<-replicate(1000,{
+  new<-data%>%mutate(smstat=sample(smstat)) 
+  SSW<-new%>%group_by(smstat)%>%dplyr::select(age,yronset)%>%
+    do(d=dist(.[2:3],"euclidean"))%>%ungroup()%>%
+    summarize(sum(d[[1]]^2)/50 + sum(d[[2]]^2)/50+ sum(d[[3]]^2)/50)%>%pull
+  ((SST-SSW)/2)/(SSW/147)
+})
+
+{hist(Fs,prob = T); abline(v=F_obs, col="red", lwd=3)}
+mean(Fs>F_obs)
+```
+H0: For each response variable,  the means of the groups are equal
+HA: For at least one response variable, the mean of at least one group differs from the rest
+The p-value is less than 0.05 so the model fails to reject the null hypothesis and at least one of the groups differs from the rest.
+
+```{R}
+# Linear modeling
+# code that relevels to make things make sense
+# now "d" is 1 and "n" is 0
+data <- data %>%
+  mutate(premi = relevel(premi, ref = "n"), diabetes = relevel(diabetes, ref = "n"))
+head(data)
+# mean center numeric variables
+# mean center age
+```
+
+```{R}
+data$age_c <- data$age - mean(data$age)
+mean(data$age) #60.77988
+```
+
+```{R}
+fit <- lm(age_c ~ premi * diabetes, data=data)
+summary(fit)
+ggplot(data, aes(y=age, x=premi,group=diabetes))+
+  geom_point(aes(color=diabetes))+
+  geom_smooth(method="lm",se=F,fullrange=T,aes(color=diabetes))+
+  theme(legend.position=c(.9,.19))+xlab("premi")
+```
+
+This model predicts the age that a woman may have a heart attack based on whether or not she has diabetes and whether or not she has had a previous heart attack.
+The regression equation for this model would be age 
+  = -0.6995 + 2.1482(premi) + 1.4586(diabetes) - 1.8171(interaction) 
+When controlling for diabetes and previous heart attacks, the intercept of the model with the adjusted age values is  -0.6995.  When this value is added to the mean age of the patients, the predicted age of a heart attack becomes 60.08048 when a woman has not had a heart attack and is not diabetic.  The predicted centered age increases by a value of 2.1482 when a patient has had a previous heart attack.  The predicted centered age increases by 1.4586 if the patient is diabetic.  The interaction of the two categorical variables causes the predicted age of the model to decrease by 1.8171.
+
+```{R}
+# homoskedacity
+library(sandwich)
+library(lmtest)
+
+resids<-fit$residuals
+fitvals<-fit$fitted.values
+
+bptest(fit)
+ggplot()+geom_histogram(aes(resids),bins=20)
+# This shows that the data is not normal because it is skewed to the left.
+```
+
+```{R}
+ggplot()+geom_qq(aes(sample=resids))+geom_qq_line(aes(sample=resids), color='red')
+# This graph shows that the data in not lineat because the data points do not follow the linear pattern of the
+# red residual line
+
+# The BP test rejected the null hypothesis and heteroskedacity is assumed by the model. 
+
+```
+
+```{R}
+coeftest(fit, vcov = vcovHC(fit))
+# I reran the regression using heteroskedasticity robust standard errors which, although the p-values were raised, the 
+# model still rejected the null hypothesis and showed that heteroskedasticity was assumed, except for the 
+# interaction between premi and diabetes in which the p-value was raised enough that the model failed to reject the
+# null hypothesis was rejected and showed that heteroskedasticty does not exist in the interaction of the variables.
+
+
+# The R squared value of the linear regression was 0.01673.  About 1.673% of the variation in age is explained by the model.
+```
+
+```{R}
+samp_distn<-replicate(5000, {
+  boot_dat<-boot_dat<-data[sample(nrow(data),replace=TRUE),]
+  fit_b <- lm(age_c ~ premi * diabetes, data=boot_dat)
+  coef(fit_b)
+    })
+samp_distn%>%t%>%as.data.frame%>%summarize_all(sd)
+```
+The robust standard errors and the bootstrap standard errors were very similar (within 1% of each other).
+The p-values of the diabetes and the interaction of the two models were very similar, while the p-values of the intercept and the premi variable were much lower than on the bootstrapped data than on the robust model.
+
+```{R}
+# LOGISTIC REGRESSION
+fitlogreg1<-glm(outcome~ age + premi, data=data, family="binomial")
+summary(fitlogreg1)
+exp(coef(fitlogreg1))%>%round(3)
+table(data$outcome,data$premi) %>% addmargins
+```
+This model attempts to predict the odds of a patient dying after a heart attack based on the age of the patient and whether or not the patient had a previous heart attack.   Every one-unit increase in age multiplies odds by e^-0.05402 = 0.947.  The odds of a patient surviving a heart attack for patients with a previous heart attack are 0.715 times that of patients with no previous heart attack.
+
+```{R}
+datalogreg <- data
+datalogreg$prob1 <- predict(fitlogreg1, newdata=datalogreg,type = "response")
+table(predict = as.numeric(datalogreg$prob1 > 0.1), truth = datalogreg$outcome) %>%
+  addmargins
+```
+
+```{R}
+# despite lowering the cutoff rate by quite a bit, this data did not predict any negatives.
+mifem %>% group_by(outcome) %>% summarize(count = n())
+# this may have to do with there being significanlty more data entries in which the outcome was that the patient survived (974)
+# than the patient dying (321).
+```
+
+```{R}
+# accuracy
+(935)/1163
+# 0.8039553
+
+# sensitivity TPR
+(935)/935
+# 1
+
+# Specificity TNR
+(0/228)
+# 0
+
+# PPV
+(935/1163)
+# 0.8039553
+
+#FPR
+(228/1163)
+# 0
+```
+
+```{R}
+datalogreg$logit<-predict(fitlogreg1,type="link")
+datalogreg%>%ggplot()+geom_density(aes(logit,color=outcome,fill=outcome), alpha=.4)+
+  theme(legend.position=c(.85,.85))+geom_vline(xintercept=0)+xlab("predictor (logit)")
+```
+
+```{R}
+#install.packages("plotROC")
+library(plotROC)
+
+probb <- predict(fitlogreg1, type = "response", family = "binomial")
+ROCplot1 <- datalogreg %>% ggplot() + geom_roc(aes(d = outcome, m = probb),
+                                      n.cuts = 0) + geom_segment(aes(x = 0, xend = 1, y = 0, yend = 1),
+                                                                 lty = 2)
+ROCplot1
+class_diag(probb, datalogreg$outcome)
+```
+The ROC curve does not look very good.  The model did not predict any negative results.  An ROC curve shows the tradeoff between sensitivity and specificity.  When an ROC curve has an AUC close to 1, the model will do a good job predicting the binary outcome variable correctly.  When the AUC ic close to 0.5, the model does not predict the binary outcome will much accuracy, it essentially predicts the outcome as well as a 50/50 coin toss.  In this model that was run, the ROC curve has an AUC of 0.6103997 so it does not predict the binary outcome variable with much accuracy.
+
+```{R}
+# Repeated random sampling
+
+set.seed(1234)
+fraction<-0.5 #choose proportion of rows to train
+train_n<-floor(fraction*nrow(datalogreg)) #number of rows to train
+iter<-500 #number of iterations
+diags<-NULL
+for(i in 1:iter){
+  ## Create training and test sets
+  train_index<-sample(1:nrow(datalogreg),size=train_n)
+  train<-datalogreg[train_index,]
+  test<-datalogreg[-train_index,]
+  truth<-test$outcome
+  ## Train model on training set
+  fitrrs<-glm(outcome~age + premi ,data=train,family="binomial")
+  probsrrs<-predict(fitrrs,newdata = test,type="response")
+  ## Test model on test set (save results)
+  diags<-rbind(diags,class_diag(probsrrs,truth))
+}
+apply(diags,2,mean) #average across all k results
+```
+
+The average out of sample Accuracy was 0.8045326, Sensitivity was 1, and Recall was 0.8045326.
+
+```{R}
+# LASSO
+#install.packages("glmnet")
+library(glmnet)
+fit1d <- glm(outcome ~ -1 + age + yronset + premi + smstat +
+               diabetes + highbp + hichol + angina + stroke, data = data,
+             family = "binomial")
+data$prob1d <- predict(fit1d, data = "response")
+x1 <- model.matrix(fit1d)
+x1 <- scale(x1)
+y1 <- as.matrix(data$outcome)
+cv1 <- cv.glmnet(x1, y1, family = "binomial")
+lasso1 <- glmnet(x1, y1, family = "binomial", lambda = cv1$lambda.1se)
+coef(cv1)
+```
+
+After the LASSO regression the variables, yronset, hichol, and angina remained.
+
+```{R}
+k = 10
+datasig <- data %>% dplyr::select(-premi, -smstat, -highbp, -diabetes)
+fit1e <- glm(outcome ~ -1 + age + yronset + angina + stroke, data = datasig, family = "binomial")
+datasig$prob1e <- predict(fit1e, data = "response")
+x2 <- model.matrix(fit1e)
+x2 <- scale(x2)
+y2 <- as.matrix(datasig$outcome)
+cv2 <- cv.glmnet(x2, y2, family = "binomial")
+lasso2 <- glmnet(x2, y2, family = "binomial", lambda = cv2$lambda.1se)
+coef(cv2)
+
+k=10 #choose number of folds
+data$anginan<-ifelse(data$angina=="n",1,0)
+data1<-data[sample(nrow(data)),] #randomly order rows
+folds<-cut(seq(1:nrow(data)),breaks=k,labels=F) #create folds
+diags<-NULL
+for(i in 1:k){
+  ## Create training and test sets
+  trainl<-data1[folds!=i,]
+  testl<-data1[folds==i,]
+  truthl<-testl$outcome
+  ## Train model on training set
+  fitl<-glm(outcome~age+anginan,data=trainl,family="binomial")
+  probsl<-predict(fitl,newdata = testl,type="response")
+  ## Test model on test set (save all k results)
+  diags<-rbind(diags,class_diag(probsl,truthl))
+}
+diags%>%summarize_all(mean)
+```
+The out of sample accuracy from the 10-fold CV is 0.7777778 while the accuracy from the logistic regression is 0.8039553
+The 10-fold CV had a lower accuracy, meaning a better fit.

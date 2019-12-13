@@ -6,10 +6,19 @@
     <description>Recent content on Gina Carrion</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 02 Oct 2016 22:55:05 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 10 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>1st Blog Post</title>
+      <link>/blog/1st-blog-post/</link>
+      <pubDate>Tue, 10 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/1st-blog-post/</guid>
+      <description>I like to ski</description>
+    </item>
     
     <item>
       <title>Projects</title>
@@ -17,7 +26,10 @@
       <pubDate>Sun, 02 Oct 2016 22:55:05 -0400</pubDate>
       
       <guid>/projects/</guid>
-      <description></description>
+      <description>Projects Here are some projects I have been working on:
+  Project 1
+  Project 2
+  </description>
     </item>
     
     <item>
@@ -32,48 +44,21 @@ summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
     </item>
     
     <item>
-      <title>Creating a New Theme</title>
-      <link>/blog/creating-a-new-theme/</link>
-      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
+      <title>Project 2</title>
+      <link>/project2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/blog/creating-a-new-theme/</guid>
-      <description>Introduction This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&#39;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&#39;t cover using CSS to style your theme.
-We&#39;ll start with creating a new site with a very basic template.</description>
+      <guid>/project2/</guid>
+      <description>This is a data frame with 1295 rows and 10 columns. The data set contains information about the mortality outcomes for females suffering myocardial infarction. A myocradial infarction is a heart attack and I will refer to it as that throughout the project. It contains a binary variable, ‘outcome’ in which the patient either lived or died. The data set contains 2 numerical variable,‘age’ the age of the onset of theheart attack, and ‘yronset’ the year of the onset of the heart attack.</description>
     </item>
     
     <item>
-      <title>(Hu)go Template Primer</title>
-      <link>/blog/goisforlovers/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      <title>Project1_gmc</title>
+      <link>/project1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/blog/goisforlovers/</guid>
-      <description>Hugo uses the excellent go html/template library for its template engine. It is an extremely lightweight engine that provides a very small amount of logic. In our experience that it is just the right amount of logic to be able to create a good static website. If you have used other template systems from different languages or frameworks you will find a lot of similarities in go templates.
-This document is a brief primer on using go templates.</description>
-    </item>
-    
-    <item>
-      <title>Getting Started with Hugo</title>
-      <link>/blog/hugoisforlovers/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/hugoisforlovers/</guid>
-      <description>Step 1. Install Hugo Goto hugo releases and download the appropriate version for your os and architecture.
-Save it somewhere specific as we will be using it in the next step.
-More complete instructions are available at installing hugo
-Step 2. Build the Docs Hugo has its own example site which happens to also be the documentation site you are reading right now.
-Follow the following steps:
- Clone the hugo repository Go into the repo Run hugo in server mode and build the docs Open your browser to http://localhost:1313  Corresponding pseudo commands:</description>
-    </item>
-    
-    <item>
-      <title>Migrate to Hugo from Jekyll</title>
-      <link>/blog/migrate-from-jekyll/</link>
-      <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/migrate-from-jekyll/</guid>
-      <description>Move static content to static Jekyll has a rule that any directory not starting with _ will be copied as-is to the _site output. Hugo keeps all static content under static. You should therefore move it all there. With Jekyll, something that looked like
-▾ &amp;lt;root&amp;gt;/ ▾ images/ logo.png  should become
-▾ &amp;lt;root&amp;gt;/ ▾ static/ ▾ images/ logo.png  Additionally, you&#39;ll want any files that should reside at the root (such as CNAME) to be moved to static.</description>
+      <guid>/project1/</guid>
+      <description>### changed the name of a column so that it could be joined more easilysech1 &amp;lt;- secher %&amp;gt;% dplyr::select(birthwt = bwt, bpd, ad, no)head(sech1)## birthwt bpd ad no## 1 2350 88 92 1## 2 2450 91 98 2## 3 3300 94 110 3## 4 1800 84 89 4## 5 2900 89 97 5## 6 3500 100 110 6### tidy data examplepivgender &amp;lt;- pivot_wider(birthweight, names_from = &amp;quot;gender&amp;quot;, values_from = &amp;quot;gender&amp;quot;)head(pivgender)## # A tibble: 6 x 5## momsage birthwt term M F ## &amp;lt;int&amp;gt; &amp;lt;int&amp;gt; &amp;lt;int&amp;gt; &amp;lt;fct&amp;gt; &amp;lt;fct&amp;gt;## 1 27 3650 41 M &amp;lt;NA&amp;gt; ## 2 26 2950 37 &amp;lt;NA&amp;gt; F ## 3 28 3210 40 &amp;lt;NA&amp;gt; F ## 4 32 4420 42 M &amp;lt;NA&amp;gt; ## 5 30 3330 40 M &amp;lt;NA&amp;gt; ## 6 26 2950 40 M &amp;lt;NA&amp;gt;# i thought the data was tidy before the pivot wider but here is an example of what could have happened### gave an observation number to the birthweight data set to help visualize in the joined datasetbtwt &amp;lt;- birthweight %&amp;gt;% mutate(ID = row_number())head(btwt)## momsage birthwt term gender ID## 1 27 3650 41 M 1## 2 26 2950 37 F 2## 3 28 3210 40 F 3## 4 32 4420 42 M 4## 5 30 3330 40 M 5## 6 26 2950 40 M 6### Join data sets# For the data I picked, I wanted to keep all the variables so all the join functions seemed to work similarly, I picked full joinfulldata &amp;lt;- sech1 %&amp;gt;% full_join(y = btwt, by = &amp;quot;birthwt&amp;quot;)fdo &amp;lt;- fulldata %&amp;gt;% na.</description>
     </item>
     
   </channel>
