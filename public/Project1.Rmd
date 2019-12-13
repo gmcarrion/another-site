@@ -40,37 +40,38 @@ head(btwt)
 fulldata <- sech1 %>% full_join(y = btwt, by = "birthwt")
 fdo <- fulldata %>% na.omit()
 head(fdo)
-#fdo drops a lot of data but it gives me birthweights that were present in both data sets
 ```
+
+fdo drops a lot of data but it gives me birthweights that were present in both data sets
 
 ```{R}
 ### filter() function
-fdo %>% filter(gender == "M")
+head(fdo %>% filter(gender == "M"))
 # gave only observations from the male gender
-fdo %>% filter(momsage == "22" & gender =="F")
+head(fdo %>% filter(momsage == "22" & gender =="F"))
 # gave functions that had a moms age of 22 and gender of female
 ```
 
 ```{R}
 ### arrange() function
 # put the dataframe in a certain order according to a variable
-fdo %>% arrange(desc(birthwt), desc(term))
-fdo %>% arrange(desc(term), momsage)
+head(fdo %>% arrange(desc(birthwt), desc(term)))
+head(fdo %>% arrange(desc(term), momsage))
 ```
 
 ```{R}
 ### select() function
 # chose only a few columns to look at a time
-fdo %>% select(birthwt, momsage, ad)
+head(fdo %>% dplyr::select(birthwt, momsage, ad))
 ```
 
 ```{R}
 ### group_by() function
 # according to birthweight, pulled the mean and standard deviation of the birthweights
-fdo %>% group_by(birthwt) %>% summarize(mean_bwt = mean(birthwt, na.rm = T), sd_bwt = sd(birthwt, na.rm=T))
+head(fdo %>% group_by(birthwt) %>% summarize(mean_bwt = mean(birthwt, na.rm = T), sd_bwt = sd(birthwt, na.rm=T)))
 ```
 
-```{R}
+```{r, echo = FALSE}
 ### ggplots
 fdo %>% group_by(birthwt, momsage) %>%
   summarize(mean_bwt=mean(birthwt, na.rm=T),
@@ -78,7 +79,7 @@ fdo %>% group_by(birthwt, momsage) %>%
   ggplot(aes(momsage,mean_bwt))+geom_bar(stat="identity")
 ```
 
-```{R}
+```{r, echo = FALSE}
 ## ggplots
 # IN this plot you can see the birthweight ompared to the term broken down by the moms age when the child was born
 ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$term))+
@@ -88,7 +89,7 @@ ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$term))+
   facet_wrap(~fdo$momsage)
 ```
 
-```{R}
+```{r, echo = FALSE}
 # This plot shows that there is a general trend between the birthweight and head size of the babies
 # There is not an apparent trend with the birthweight or head size and what term the babies were born in, some of the low weight babies were born earlier except for one outlier
 ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$bpd, color = fdo$term))+

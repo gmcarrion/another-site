@@ -117,38 +117,18 @@ head(fdo)</code></pre>
 ## 8     3500 100 110  6      26   39      F 47
 ## 9     2700  90 110  7      22   40      M 40
 ## 10    2950  92 100  8      26   37      F  2</code></pre>
-<pre class="r"><code>#fdo drops a lot of data but it gives me birthweights that were present in both data sets</code></pre>
+<p>fdo drops a lot of data but it gives me birthweights that were present in both data sets</p>
 <pre class="r"><code>### filter() function
-fdo %&gt;% filter(gender == &quot;M&quot;)</code></pre>
-<pre><code>##    birthwt bpd  ad no momsage term gender ID
-## 1     3500 100 110  6      23   41      M 18
-## 2     2700  90 110  7      22   40      M 40
-## 3     2950  92 100  8      26   40      M  6
-## 4     3400  94 110 21      27   40      M 35
-## 5     3400  88 113 22      27   40      M 35
-## 6     3650  94 107 25      27   41      M  1
-## 7     3500  96 111 26      23   41      M 18
-## 8     2700  89 105 29      22   40      M 40
-## 9     3100  92 112 33      27   38      M 24
-## 10    3600  84 116 35      27   39      M 51
-## 11    3100  91 102 36      27   38      M 24
-## 12    3100  92 109 39      27   38      M 24
-## 13    2950  93 108 43      26   40      M  6
-## 14    3500  95 102 46      23   41      M 18
-## 15    3250  96 102 49      30   40      M 42
-## 16    3600  97 112 53      27   39      M 51
-## 17    3050  90 100 56      25   42      M 29
-## 18    2950  94 108 62      26   40      M  6
-## 19    3100  94 110 66      27   38      M 24
-## 20    4200  97 133 68      26   41      M 25
-## 21    3100  92 119 72      27   38      M 24
-## 22    2950  92 107 73      26   40      M  6
-## 23    2950  91 100 84      26   40      M  6
-## 24    2700  92 102 86      22   40      M 40
-## 25    3150  91 107 96      31   41      M 31
-## 26    3150  91 107 96      23   39      M 39</code></pre>
+head(fdo %&gt;% filter(gender == &quot;M&quot;))</code></pre>
+<pre><code>##   birthwt bpd  ad no momsage term gender ID
+## 1    3500 100 110  6      23   41      M 18
+## 2    2700  90 110  7      22   40      M 40
+## 3    2950  92 100  8      26   40      M  6
+## 4    3400  94 110 21      27   40      M 35
+## 5    3400  88 113 22      27   40      M 35
+## 6    3650  94 107 25      27   41      M  1</code></pre>
 <pre class="r"><code># gave only observations from the male gender
-fdo %&gt;% filter(momsage == &quot;22&quot; &amp; gender ==&quot;F&quot;)</code></pre>
+head(fdo %&gt;% filter(momsage == &quot;22&quot; &amp; gender ==&quot;F&quot;))</code></pre>
 <pre><code>##   birthwt bpd  ad no momsage term gender ID
 ## 1    3500 100 110  6      22   40      F 34
 ## 2    3500  96 111 26      22   40      F 34
@@ -156,198 +136,46 @@ fdo %&gt;% filter(momsage == &quot;22&quot; &amp; gender ==&quot;F&quot;)</code>
 <pre class="r"><code># gave functions that had a moms age of 22 and gender of female</code></pre>
 <pre class="r"><code>### arrange() function
 # put the dataframe in a certain order according to a variable
-fdo %&gt;% arrange(desc(birthwt), desc(term))</code></pre>
-<pre><code>##    birthwt bpd  ad  no momsage term gender ID
-## 1     4200  97 133  68      26   41      M 25
-## 2     3650  94 107  25      27   41      M  1
-## 3     3600  84 116  35      25   41      F 14
-## 4     3600  97 112  53      25   41      F 14
-## 5     3600  84 116  35      27   39      M 51
-## 6     3600  97 112  53      27   39      M 51
-## 7     3550  93 108  27      23   40      F 21
-## 8     3550  92 116 105      23   40      F 21
-## 9     3500 100 110   6      23   41      M 18
-## 10    3500  96 111  26      23   41      M 18
-## 11    3500  95 102  46      23   41      M 18
-## 12    3500 100 110   6      22   40      F 34
-## 13    3500  96 111  26      22   40      F 34
-## 14    3500  95 102  46      22   40      F 34
-## 15    3500 100 110   6      26   39      F 47
-## 16    3500  96 111  26      26   39      F 47
-## 17    3500  95 102  46      26   39      F 47
-## 18    3400  94 110  21      27   40      M 35
-## 19    3400  88 113  22      27   40      M 35
-## 20    3250  96 102  49      30   40      M 42
-## 21    3150  91 107  96      31   41      M 31
-## 22    3150  91 107  96      23   39      M 39
-## 23    3100  92 112  33      27   38      M 24
-## 24    3100  91 102  36      27   38      M 24
-## 25    3100  92 109  39      27   38      M 24
-## 26    3100  94 110  66      27   38      M 24
-## 27    3100  92 119  72      27   38      M 24
-## 28    3050  90 100  56      25   42      M 29
-## 29    2950  92 100   8      26   40      M  6
-## 30    2950  93 108  43      26   40      M  6
-## 31    2950  94 108  62      26   40      M  6
-## 32    2950  92 107  73      26   40      M  6
-## 33    2950  91 100  84      26   40      M  6
-## 34    2950  92 100   8      26   37      F  2
-## 35    2950  93 108  43      26   37      F  2
-## 36    2950  94 108  62      26   37      F  2
-## 37    2950  92 107  73      26   37      F  2
-## 38    2950  91 100  84      26   37      F  2
-## 39    2900  89  97   5      27   40      F 12
-## 40    2900  91 101  16      27   40      F 12
-## 41    2900  84 104  58      27   40      F 12
-## 42    2900  93 110  67      27   40      F 12
-## 43    2900  92 108  98      27   40      F 12
-## 44    2900  92 104 107      27   40      F 12
-## 45    2850  91 105  85      29   36      F 15
-## 46    2700  90 110   7      22   40      M 40
-## 47    2700  89 105  29      22   40      M 40
-## 48    2700  92 102  86      22   40      M 40</code></pre>
-<pre class="r"><code>fdo %&gt;% arrange(desc(term), momsage)</code></pre>
-<pre><code>##    birthwt bpd  ad  no momsage term gender ID
-## 1     3050  90 100  56      25   42      M 29
-## 2     3500 100 110   6      23   41      M 18
-## 3     3500  96 111  26      23   41      M 18
-## 4     3500  95 102  46      23   41      M 18
-## 5     3600  84 116  35      25   41      F 14
-## 6     3600  97 112  53      25   41      F 14
-## 7     4200  97 133  68      26   41      M 25
-## 8     3650  94 107  25      27   41      M  1
-## 9     3150  91 107  96      31   41      M 31
-## 10    3500 100 110   6      22   40      F 34
-## 11    2700  90 110   7      22   40      M 40
-## 12    3500  96 111  26      22   40      F 34
-## 13    2700  89 105  29      22   40      M 40
-## 14    3500  95 102  46      22   40      F 34
-## 15    2700  92 102  86      22   40      M 40
-## 16    3550  93 108  27      23   40      F 21
-## 17    3550  92 116 105      23   40      F 21
-## 18    2950  92 100   8      26   40      M  6
-## 19    2950  93 108  43      26   40      M  6
-## 20    2950  94 108  62      26   40      M  6
-## 21    2950  92 107  73      26   40      M  6
-## 22    2950  91 100  84      26   40      M  6
-## 23    2900  89  97   5      27   40      F 12
-## 24    2900  91 101  16      27   40      F 12
-## 25    3400  94 110  21      27   40      M 35
-## 26    3400  88 113  22      27   40      M 35
-## 27    2900  84 104  58      27   40      F 12
-## 28    2900  93 110  67      27   40      F 12
-## 29    2900  92 108  98      27   40      F 12
-## 30    2900  92 104 107      27   40      F 12
-## 31    3250  96 102  49      30   40      M 42
-## 32    3150  91 107  96      23   39      M 39
-## 33    3500 100 110   6      26   39      F 47
-## 34    3500  96 111  26      26   39      F 47
-## 35    3500  95 102  46      26   39      F 47
-## 36    3600  84 116  35      27   39      M 51
-## 37    3600  97 112  53      27   39      M 51
-## 38    3100  92 112  33      27   38      M 24
-## 39    3100  91 102  36      27   38      M 24
-## 40    3100  92 109  39      27   38      M 24
-## 41    3100  94 110  66      27   38      M 24
-## 42    3100  92 119  72      27   38      M 24
-## 43    2950  92 100   8      26   37      F  2
-## 44    2950  93 108  43      26   37      F  2
-## 45    2950  94 108  62      26   37      F  2
-## 46    2950  92 107  73      26   37      F  2
-## 47    2950  91 100  84      26   37      F  2
-## 48    2850  91 105  85      29   36      F 15</code></pre>
+head(fdo %&gt;% arrange(desc(birthwt), desc(term)))</code></pre>
+<pre><code>##   birthwt bpd  ad no momsage term gender ID
+## 1    4200  97 133 68      26   41      M 25
+## 2    3650  94 107 25      27   41      M  1
+## 3    3600  84 116 35      25   41      F 14
+## 4    3600  97 112 53      25   41      F 14
+## 5    3600  84 116 35      27   39      M 51
+## 6    3600  97 112 53      27   39      M 51</code></pre>
+<pre class="r"><code>head(fdo %&gt;% arrange(desc(term), momsage))</code></pre>
+<pre><code>##   birthwt bpd  ad no momsage term gender ID
+## 1    3050  90 100 56      25   42      M 29
+## 2    3500 100 110  6      23   41      M 18
+## 3    3500  96 111 26      23   41      M 18
+## 4    3500  95 102 46      23   41      M 18
+## 5    3600  84 116 35      25   41      F 14
+## 6    3600  97 112 53      25   41      F 14</code></pre>
 <pre class="r"><code>### select() function
 # chose only a few columns to look at a time
-fdo %&gt;% select(birthwt, momsage, ad)</code></pre>
-<pre><code>##     birthwt momsage  ad
-## 5      2900      27  97
-## 6      3500      23 110
-## 7      3500      22 110
-## 8      3500      26 110
-## 9      2700      22 110
-## 10     2950      26 100
-## 11     2950      26 100
-## 19     2900      27 101
-## 24     3400      27 110
-## 25     3400      27 113
-## 28     3650      27 107
-## 29     3500      23 111
-## 30     3500      22 111
-## 31     3500      26 111
-## 32     3550      23 108
-## 34     2700      22 105
-## 38     3100      27 112
-## 40     3600      25 116
-## 41     3600      27 116
-## 42     3100      27 102
-## 45     3100      27 109
-## 49     2950      26 108
-## 50     2950      26 108
-## 53     3500      23 102
-## 54     3500      22 102
-## 55     3500      26 102
-## 58     3250      30 102
-## 62     3600      25 112
-## 63     3600      27 112
-## 66     3050      25 100
-## 68     2900      27 104
-## 72     2950      26 108
-## 73     2950      26 108
-## 77     3100      27 110
-## 78     2900      27 110
-## 79     4200      26 133
-## 83     3100      27 119
-## 84     2950      26 107
-## 85     2950      26 107
-## 96     2950      26 100
-## 97     2950      26 100
-## 98     2850      29 105
-## 99     2700      22 102
-## 109    3150      31 107
-## 110    3150      23 107
-## 112    2900      27 108
-## 119    3550      23 116
-## 121    2900      27 104</code></pre>
+head(fdo %&gt;% dplyr::select(birthwt, momsage, ad))</code></pre>
+<pre><code>##    birthwt momsage  ad
+## 5     2900      27  97
+## 6     3500      23 110
+## 7     3500      22 110
+## 8     3500      26 110
+## 9     2700      22 110
+## 10    2950      26 100</code></pre>
 <pre class="r"><code>### group_by() function
 # according to birthweight, pulled the mean and standard deviation of the birthweights
-fdo %&gt;% group_by(birthwt) %&gt;% summarize(mean_bwt = mean(birthwt, na.rm = T), sd_bwt = sd(birthwt, na.rm=T))</code></pre>
-<pre><code>## # A tibble: 14 x 3
-##    birthwt mean_bwt sd_bwt
-##      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;
-##  1    2700     2700      0
-##  2    2850     2850     NA
-##  3    2900     2900      0
-##  4    2950     2950      0
-##  5    3050     3050     NA
-##  6    3100     3100      0
-##  7    3150     3150      0
-##  8    3250     3250     NA
-##  9    3400     3400      0
-## 10    3500     3500      0
-## 11    3550     3550      0
-## 12    3600     3600      0
-## 13    3650     3650     NA
-## 14    4200     4200     NA</code></pre>
-<pre class="r"><code>### ggplots
-fdo %&gt;% group_by(birthwt, momsage) %&gt;%
-  summarize(mean_bwt=mean(birthwt, na.rm=T),
-              sd_bwt=sd(birthwt, na.rm=T), n=n()) %&gt;%
-  ggplot(aes(momsage,mean_bwt))+geom_bar(stat=&quot;identity&quot;)</code></pre>
+head(fdo %&gt;% group_by(birthwt) %&gt;% summarize(mean_bwt = mean(birthwt, na.rm = T), sd_bwt = sd(birthwt, na.rm=T)))</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   birthwt mean_bwt sd_bwt
+##     &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+## 1    2700     2700      0
+## 2    2850     2850     NA
+## 3    2900     2900      0
+## 4    2950     2950      0
+## 5    3050     3050     NA
+## 6    3100     3100      0</code></pre>
 <p><img src="/Project1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<pre class="r"><code>## ggplots
-# IN this plot you can see the birthweight ompared to the term broken down by the moms age when the child was born
-ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$term))+
-  geom_point()+
-  ggtitle(&quot;Birthweight vs Term&quot;)+
-  xlab(&quot;Birthweight&quot;)+ ylab(&quot;Term&quot;)+
-  facet_wrap(~fdo$momsage)</code></pre>
 <p><img src="/Project1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<pre class="r"><code># This plot shows that there is a general trend between the birthweight and head size of the babies
-# There is not an apparent trend with the birthweight or head size and what term the babies were born in, some of the low weight babies were born earlier except for one outlier
-ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$bpd, color = fdo$term))+
-  geom_point(stat = &quot;summary&quot;, fun.y=&quot;mean&quot;)+
-  ggtitle(&quot;Birthweight vs BPD by Term&quot;)+
-  xlab(&quot;Birthweight&quot;)+ ylab(&quot;BPD&quot;)</code></pre>
 <p><img src="/Project1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre class="r"><code>### summary functions
 # mean
