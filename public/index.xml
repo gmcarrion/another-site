@@ -33,14 +33,13 @@
     </item>
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>/blog/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title></title>
+      <link>/resume-master/readme/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/blog/2015-07-23-r-rmarkdown/</guid>
-      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+      <guid>/resume-master/readme/</guid>
+      <description>RMarkdown resume/CV template Based on templates by svmiller and ryanpeek. The only two files that are required to run the RMarkdown is cv-template.Rmd and cv-template.tex, which should be stored in the same directory.
+What you write in the fields is completely customizable if you know some Markdown. How you format the document requires LaTeX.</description>
     </item>
     
     <item>
@@ -59,6 +58,48 @@ summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       
       <guid>/project1/</guid>
       <description>### changed the name of a column so that it could be joined more easilysech1 &amp;lt;- secher %&amp;gt;% dplyr::select(birthwt = bwt, bpd, ad, no)head(sech1)## birthwt bpd ad no## 1 2350 88 92 1## 2 2450 91 98 2## 3 3300 94 110 3## 4 1800 84 89 4## 5 2900 89 97 5## 6 3500 100 110 6### tidy data examplepivgender &amp;lt;- pivot_wider(birthweight, names_from = &amp;quot;gender&amp;quot;, values_from = &amp;quot;gender&amp;quot;)head(pivgender)## # A tibble: 6 x 5## momsage birthwt term M F ## &amp;lt;int&amp;gt; &amp;lt;int&amp;gt; &amp;lt;int&amp;gt; &amp;lt;fct&amp;gt; &amp;lt;fct&amp;gt;## 1 27 3650 41 M &amp;lt;NA&amp;gt; ## 2 26 2950 37 &amp;lt;NA&amp;gt; F ## 3 28 3210 40 &amp;lt;NA&amp;gt; F ## 4 32 4420 42 M &amp;lt;NA&amp;gt; ## 5 30 3330 40 M &amp;lt;NA&amp;gt; ## 6 26 2950 40 M &amp;lt;NA&amp;gt;# i thought the data was tidy before the pivot wider but here is an example of what could have happened### gave an observation number to the birthweight data set to help visualize in the joined datasetbtwt &amp;lt;- birthweight %&amp;gt;% mutate(ID = row_number())head(btwt)## momsage birthwt term gender ID## 1 27 3650 41 M 1## 2 26 2950 37 F 2## 3 28 3210 40 F 3## 4 32 4420 42 M 4## 5 30 3330 40 M 5## 6 26 2950 40 M 6### Join data sets# For the data I picked, I wanted to keep all the variables so all the join functions seemed to work similarly, I picked full joinfulldata &amp;lt;- sech1 %&amp;gt;% full_join(y = btwt, by = &amp;quot;birthwt&amp;quot;)fdo &amp;lt;- fulldata %&amp;gt;% na.</description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>/resume-master/cv-template/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/resume-master/cv-template/</guid>
+      <description>EducationBachelor of Science, Cell and Molecular Biology Expected May 2020University of Texas at Austin
+GPA: 3.58Business Minor Summer 2017
+McCombs School of Business, University of Texas at Austin
+18 Hours of Business Courses, McCombs Summer InstituteExperienceUndergraduate Research Assistant Fall 2019 - current
+Havird Lab, University of Texas at Austin
+Researched the coevolution of mitochondrial genomes and nuclear genomes in different species of the plantgenus, SileneIsolated mitochondria and analyzed the respiration rates of species within the genus, SileneUndergraduate Research Assistant Fall 2018 – Summer 2019</description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>/resume-master/resume_gmc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/resume-master/resume_gmc/</guid>
+      <description>EducationBachelor of Science, Cell and Molecular Biology Expected May 2020University of Texas at Austin
+GPA: 3.58Business Minor Summer 2017
+McCombs School of Business, University of Texas at Austin
+18 Hours of Business Courses, McCombs Summer InstituteExperienceUndergraduate Research Assistant Fall 2019 - current
+Havird Lab, University of Texas at Austin
+Researched the coevolution of mitochondrial genomes and nuclear genomes in different species of the plantgenus, SileneIsolated mitochondria and analyzed the respiration rates of species within the genus, SileneUndergraduate Research Assistant Fall 2018 – Summer 2019</description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>/resume_gmc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/resume_gmc/</guid>
+      <description>EducationBachelor of Science, Cell and Molecular Biology Expected May 2020University of Texas at Austin
+GPA: 3.58Business Minor Summer 2017
+McCombs School of Business, University of Texas at Austin
+18 Hours of Business Courses, McCombs Summer InstituteExperienceUndergraduate Research Assistant Fall 2019 - current
+Havird Lab, University of Texas at Austin
+Researched the coevolution of mitochondrial genomes and nuclear genomes in different species of the plantgenus, SileneIsolated mitochondria and analyzed the respiration rates of species within the genus, SileneUndergraduate Research Assistant Fall 2018 – Summer 2019</description>
     </item>
     
   </channel>

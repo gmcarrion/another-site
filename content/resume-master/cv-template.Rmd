@@ -1,0 +1,59 @@
+---
+title: "Resume"
+author: "Gina Carrion"
+fontawesome: yes
+output:
+  html_document:
+    df_print: paged
+  pdf_document:
+    latex_engine: pdflatex
+    template: cv-latex.tex
+fontfamilyoptions: sc, osf
+fontsize: 11pt
+geometry: margin=.7in
+github: gmcarrion
+keywords: R Markdown, academic CV, template
+fontfamily: mathpazo
+phone: +1 214 604 7449
+email: ginacarrion@utexas.edu
+updated: no
+urlcolor: blue
+---
+
+# Education
+
+**Bachelor of Science, Cell and Molecular Biology** \hfill Expected May 2020
+*University of Texas at Austin*
+
+- GPA: 3.58
+
+**Business Minor** \hfill Summer 2017  
+*McCombs School of Business, University of Texas at Austin*
+
+-  18 Hours of Business Courses, McCombs Summer Institute
+
+# Experience 
+
+**Undergraduate Research Assistant** \hfill Fall 2019 - current  
+*Havird Lab, University of Texas at Austin*
+
+- Researched the coevolution of mitochondrial genomes and nuclear genomes in different species of the plant
+genus, Silene
+- Isolated mitochondria and analyzed the respiration rates of species within the genus, Silene
+
+**Undergraduate Research Assistant** \hfill Fall 2018 – Summer 2019  
+*Ryan Lab, University of Texas at Austin*
+
+- Researched the communication behaviors and hormonal state displayed by Túngara frogs when exposed to
+multimodal stimulation
+- Compiled data using coding software to analyze and score the behaviors of frogs
+- Performed extraction and elution of hormones from Túngara frogs
+
+# Relevant skills
+
+- MS Word, Excel
+- RStudio
+
+# Awards and Honors
+
+- College of Natural Sciences University Honors  \hfill Fall 2018, Spring 2019

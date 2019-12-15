@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Resume-masters on Gina Carrion</title>
+    <link>/resume-master/</link>
+    <description>Recent content in Resume-masters on Gina Carrion</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="/resume-master/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>/resume-master/readme/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/resume-master/readme/</guid>
+      <description>RMarkdown resume/CV template Based on templates by svmiller and ryanpeek. The only two files that are required to run the RMarkdown is cv-template.Rmd and cv-template.tex, which should be stored in the same directory.
+What you write in the fields is completely customizable if you know some Markdown. How you format the document requires LaTeX.</description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>/resume-master/cv-template/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/resume-master/cv-template/</guid>
+      <description>EducationBachelor of Science, Cell and Molecular Biology Expected May 2020University of Texas at Austin
+GPA: 3.58Business Minor Summer 2017
+McCombs School of Business, University of Texas at Austin
+18 Hours of Business Courses, McCombs Summer InstituteExperienceUndergraduate Research Assistant Fall 2019 - current
+Havird Lab, University of Texas at Austin
+Researched the coevolution of mitochondrial genomes and nuclear genomes in different species of the plantgenus, SileneIsolated mitochondria and analyzed the respiration rates of species within the genus, SileneUndergraduate Research Assistant Fall 2018 – Summer 2019</description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>/resume-master/resume_gmc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/resume-master/resume_gmc/</guid>
+      <description>EducationBachelor of Science, Cell and Molecular Biology Expected May 2020University of Texas at Austin
+GPA: 3.58Business Minor Summer 2017
+McCombs School of Business, University of Texas at Austin
+18 Hours of Business Courses, McCombs Summer InstituteExperienceUndergraduate Research Assistant Fall 2019 - current
+Havird Lab, University of Texas at Austin
+Researched the coevolution of mitochondrial genomes and nuclear genomes in different species of the plantgenus, SileneIsolated mitochondria and analyzed the respiration rates of species within the genus, SileneUndergraduate Research Assistant Fall 2018 – Summer 2019</description>
+    </item>
+    
+  </channel>
+</rss>

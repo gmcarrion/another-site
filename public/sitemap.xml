@@ -43,28 +43,8 @@
   </url>
   
   <url>
-    <loc>/blog/2015-07-23-r-rmarkdown/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/plot/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/r/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/r-markdown/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/regression/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+    <loc>/resume-master/readme/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -73,6 +53,22 @@
   
   <url>
     <loc>/project1/</loc>
+  </url>
+  
+  <url>
+    <loc>/resume-master/cv-template/</loc>
+  </url>
+  
+  <url>
+    <loc>/resume-master/resume_gmc/</loc>
+  </url>
+  
+  <url>
+    <loc>/resume_gmc/</loc>
+  </url>
+  
+  <url>
+    <loc>/resume-master/</loc>
   </url>
   
 </urlset>
