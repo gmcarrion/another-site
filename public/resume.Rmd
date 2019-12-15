@@ -1,0 +1,60 @@
+---
+output: 
+  pdf_document:
+    latex_engine: pdflatex
+    template: cv-latex.tex
+geometry: margin=.7in
+
+title: "CV"
+author: Gina Carrion
+
+fontawesome: yes
+email: ginacarrion@utexas.edu
+github: gmcarrion
+phone: "+1 214 604 7449"
+updated: no
+
+keywords: R Markdown, academic CV, template
+
+fontfamily: mathpazo
+fontfamilyoptions: sc, osf
+fontsize: 11pt
+urlcolor: blue
+---
+
+# Relevant skills
+
+- MS Word, Excel
+- RStudio
+
+# Experience 
+
+**Position name** \hfill Jan 2018 - current  
+*Organization, Place-name, State*
+
+- Something that you accomplished in your position; demonstrate leadership, teamwork, creativity, etc. Maybe show some numbers. Give some detail!
+- Something else that you did. Don't be shy.
+
+**Another position** \hfill Jan - Dec 2017  
+*Organization, Place-name, State*
+
+- Something that you did
+- Something else that you did
+
+# Education
+
+**M.Sc. Your Degree** \hfill 2015 - 2016  
+*Department, University*
+
+- Thesis: Something that I studied
+- Additional accomplishments
+
+**B.Sc. Your Degree** \hfill 2011 - 2015  
+*Department, University*
+
+- GPA: 
+
+# Awards and Honors
+
+- Award of Excellence \hfill 2017
+- Travel Grant \hfill 2017
