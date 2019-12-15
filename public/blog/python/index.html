@@ -94,6 +94,28 @@ print(df)</code></pre>
 ## 890         0       3    male  32.0  ...   NaN   Queenstown     no   True
 ## 
 ## [891 rows x 15 columns]</code></pre>
+<pre class="python"><code>(df.filter([&#39;age&#39;, &#39;sex&#39;]).query(&#39;sex == &quot;male&quot;&#39;))</code></pre>
+<pre><code>##       age   sex
+## 0    22.0  male
+## 4    35.0  male
+## 5     NaN  male
+## 6    54.0  male
+## 7     2.0  male
+## ..    ...   ...
+## 883  28.0  male
+## 884  25.0  male
+## 886  27.0  male
+## 889  26.0  male
+## 890  32.0  male
+## 
+## [577 rows x 2 columns]</code></pre>
+<pre class="python"><code>df[[&#39;class&#39;,&#39;age&#39;,&#39;sex&#39;]].head()</code></pre>
+<pre><code>##    class   age     sex
+## 0  Third  22.0    male
+## 1  First  38.0  female
+## 2  Third  26.0  female
+## 3  First  35.0  female
+## 4  Third  35.0    male</code></pre>
 
               <hr>
               <div class="related-posts">

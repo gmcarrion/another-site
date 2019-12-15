@@ -21,4 +21,6 @@ import numpy as np
 import pandas as pd
 df = sns.load_dataset('titanic')
 print(df)
+(df.filter(['age', 'sex']).query('sex == "male"'))
+df[['class','age','sex']].head()
 ```
