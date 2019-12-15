@@ -1,0 +1,24 @@
+---
+title: python
+author: ''
+date: '2019-12-15'
+descriotion: ''
+slug: python
+categories: []
+tags: []
+description: ''
+---
+
+```{r setup}
+#install.packages("reticulate")
+library(reticulate)
+```
+
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import pandas as pd
+df = sns.load_dataset('titanic')
+print(df)
+```

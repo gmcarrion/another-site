@@ -12,15 +12,6 @@
     
     
     <item>
-      <title>blogcat</title>
-      <link>/2019/12/15/blogcat/</link>
-      <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/2019/12/15/blogcat/</guid>
-      <description>Blog Cat</description>
-    </item>
-    
-    <item>
       <title>bloggercat</title>
       <link>/blog/bloggercat/</link>
       <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
@@ -30,21 +21,12 @@
     </item>
     
     <item>
-      <title>Cat</title>
-      <link>/2019/12/15/cat/</link>
+      <title>python</title>
+      <link>/blog/python/</link>
       <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/12/15/cat/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cat Named Sumo</title>
-      <link>/2019/12/15/cat-named-sumo/</link>
-      <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/2019/12/15/cat-named-sumo/</guid>
-      <description>[](/img/SUMO.jpg)</description>
+      <guid>/blog/python/</guid>
+      <description>#install.packages(&amp;quot;reticulate&amp;quot;)library(reticulate)import matplotlib.pyplot as pltimport seaborn as snsimport numpy as npimport pandas as pddf = sns.load_dataset(&amp;#39;titanic&amp;#39;)print(df)## survived pclass sex age ... deck embark_town alive alone## 0 0 3 male 22.0 ... NaN Southampton no False## 1 1 1 female 38.0 ... C Cherbourg yes False## 2 1 3 female 26.0 ... NaN Southampton yes True## 3 1 1 female 35.</description>
     </item>
     
     <item>
@@ -57,15 +39,6 @@
   Project 1
   Project 2
   </description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/1/01/01/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/1/01/01/</guid>
-      <description></description>
     </item>
     
     <item>

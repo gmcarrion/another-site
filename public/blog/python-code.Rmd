@@ -1,10 +1,9 @@
 ---
-title: Cat
-author: Gina
+title: Python Code
+author: ''
 date: '2019-12-15'
-slug: cat
+slug: python-code
 categories: []
 tags: []
 description: ''
 ---
-[](/img/SUMO.jpg)
