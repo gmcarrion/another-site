@@ -7,7 +7,7 @@ categories: []
 tags: []
 description: ''
 ---
-This is my cat, Sumo.  He likes all things RStudio, shiny, and fish-flavored.
+This is my cat, Sumo.  He likes RStudio, mouse toys, and staring out windows.
 
 
 ![](/blog/bloggercat_files/SUMO.jpeg)
