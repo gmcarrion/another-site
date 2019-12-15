@@ -1,0 +1,22 @@
+---
+title: "Untitled"
+author: "gina"
+date: "12/15/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::knit_engines$set(python = reticulate::eng_python)
+#install.packages("reticulate")
+library(reticulate)
+#Sys.which("python")
+#use_python("/usr/local/bin/python")
+```
+
+```{python}
+#import matplotlib.pyplot as plt
+#import seaborn as sns
+#import numpy as np
+#import pandas as pd
+#df = sns.load_dataset('titanic')
+```

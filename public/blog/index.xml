@@ -6,18 +6,18 @@
     <description>Recent content in Blogs on Gina Carrion</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Tue, 10 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 15 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>1st Blog Post</title>
-      <link>/blog/1st-blog-post/</link>
-      <pubDate>Tue, 10 Dec 2019 00:00:00 +0000</pubDate>
+      <title>bloggercat</title>
+      <link>/blog/bloggercat/</link>
+      <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/blog/1st-blog-post/</guid>
-      <description>I like to ski</description>
+      <guid>/blog/bloggercat/</guid>
+      <description>This is my cat, Sumo. He likes all things RStudio, shiny, and fish-flavored.</description>
     </item>
     
   </channel>

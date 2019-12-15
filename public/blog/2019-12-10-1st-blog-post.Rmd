@@ -7,4 +7,4 @@ categories: []
 tags: []
 description: ''
 ---
-I like to ski
+[](/blog/2019-12-10-1st-blog-post_files/SUMO.jpeg)

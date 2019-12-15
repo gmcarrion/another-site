@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Gina Carrion</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on Gina Carrion</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sun, 15 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>blogcat</title>
+      <link>/2019/12/15/blogcat/</link>
+      <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/15/blogcat/</guid>
+      <description>Blog Cat</description>
+    </item>
+    
+    <item>
+      <title>Cat</title>
+      <link>/2019/12/15/cat/</link>
+      <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/15/cat/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cat Named Sumo</title>
+      <link>/2019/12/15/cat-named-sumo/</link>
+      <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/15/cat-named-sumo/</guid>
+      <description>[](/img/SUMO.jpg)</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/1/01/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/01/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
