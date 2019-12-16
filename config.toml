@@ -21,7 +21,6 @@ theme = "hugo-sustain"
 
 [params.social]
   Github        = "gmcarrion"
-  Email         = "ginacarrion@utexas.edu"
 
 ## Main Menu
 [[menu.main]]
