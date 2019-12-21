@@ -72,8 +72,10 @@
               
 
 
-<pre class="r"><code>### changed the name of a column so that it could be joined more easily
-sech1 &lt;- secher %&gt;% dplyr::select(birthwt = bwt, bpd, ad, no)
+<div id="join-function" class="section level2">
+<h2>Join Function</h2>
+<p>The name of a column was changed so that it may be joined more easily.</p>
+<pre class="r"><code>sech1 &lt;- secher %&gt;% dplyr::select(birthwt = bwt, bpd, ad, no)
 head(sech1)</code></pre>
 <pre><code>##   birthwt bpd  ad no
 ## 1    2350  88  92  1
@@ -82,8 +84,11 @@ head(sech1)</code></pre>
 ## 4    1800  84  89  4
 ## 5    2900  89  97  5
 ## 6    3500 100 110  6</code></pre>
-<pre class="r"><code>### tidy data example
-pivgender &lt;- pivot_wider(birthweight, names_from = &quot;gender&quot;, values_from = &quot;gender&quot;)
+</div>
+<div id="tidy-data-example" class="section level2">
+<h2>Tidy Data Example</h2>
+<p>The data was already pretty tidy. Here is an example of how the pivot_wider() function could be used to tidy data</p>
+<pre class="r"><code>pivgender &lt;- pivot_wider(birthweight, names_from = &quot;gender&quot;, values_from = &quot;gender&quot;)
 head(pivgender)</code></pre>
 <pre><code>## # A tibble: 6 x 5
 ##   momsage birthwt  term M     F    
@@ -94,9 +99,8 @@ head(pivgender)</code></pre>
 ## 4      32    4420    42 M     &lt;NA&gt; 
 ## 5      30    3330    40 M     &lt;NA&gt; 
 ## 6      26    2950    40 M     &lt;NA&gt;</code></pre>
-<pre class="r"><code># i thought the data was tidy before the pivot wider but here is an example of what could have happened</code></pre>
-<pre class="r"><code>### gave an observation number to the birthweight data set to help visualize in the joined dataset
-btwt &lt;- birthweight %&gt;% mutate(ID = row_number())
+<p>An observation number was given to the birthweight data set to help visualize the joined data set.</p>
+<pre class="r"><code>btwt &lt;- birthweight %&gt;% mutate(ID = row_number())
 head(btwt)</code></pre>
 <pre><code>##   momsage birthwt term gender ID
 ## 1      27    3650   41      M  1
@@ -105,9 +109,11 @@ head(btwt)</code></pre>
 ## 4      32    4420   42      M  4
 ## 5      30    3330   40      M  5
 ## 6      26    2950   40      M  6</code></pre>
-<pre class="r"><code>### Join data sets
-# For the data I picked, I wanted to keep all the variables so all the join functions seemed to work similarly, I picked full join
-fulldata &lt;- sech1 %&gt;% full_join(y = btwt, by = &quot;birthwt&quot;)
+</div>
+<div id="join-data-sets" class="section level2">
+<h2>Join Data Sets</h2>
+<p>All of the variables from the two data sets were kept when the data sets were joined by using the full_join() function. Any NAs were removed from the data.</p>
+<pre class="r"><code>fulldata &lt;- sech1 %&gt;% full_join(y = btwt, by = &quot;birthwt&quot;)
 fdo &lt;- fulldata %&gt;% na.omit()
 head(fdo)</code></pre>
 <pre><code>##    birthwt bpd  ad no momsage term gender ID
@@ -117,9 +123,11 @@ head(fdo)</code></pre>
 ## 8     3500 100 110  6      26   39      F 47
 ## 9     2700  90 110  7      22   40      M 40
 ## 10    2950  92 100  8      26   37      F  2</code></pre>
-<p>fdo drops a lot of data but it gives me birthweights that were present in both data sets</p>
-<pre class="r"><code>### filter() function
-head(fdo %&gt;% filter(gender == &quot;M&quot;))</code></pre>
+</div>
+<div id="filter-function" class="section level2">
+<h2>Filter Function</h2>
+<p>The data set was filtered so that only observations from the male gender were pulled. Then the data set was filtered so that only obersavtions where the mother had an age of 22 and and gave birth to a female child were pulled.</p>
+<pre class="r"><code>head(fdo %&gt;% filter(gender == &quot;M&quot;))</code></pre>
 <pre><code>##   birthwt bpd  ad no momsage term gender ID
 ## 1    3500 100 110  6      23   41      M 18
 ## 2    2700  90 110  7      22   40      M 40
@@ -127,16 +135,16 @@ head(fdo %&gt;% filter(gender == &quot;M&quot;))</code></pre>
 ## 4    3400  94 110 21      27   40      M 35
 ## 5    3400  88 113 22      27   40      M 35
 ## 6    3650  94 107 25      27   41      M  1</code></pre>
-<pre class="r"><code># gave only observations from the male gender
-head(fdo %&gt;% filter(momsage == &quot;22&quot; &amp; gender ==&quot;F&quot;))</code></pre>
+<pre class="r"><code>head(fdo %&gt;% filter(momsage == &quot;22&quot; &amp; gender ==&quot;F&quot;))</code></pre>
 <pre><code>##   birthwt bpd  ad no momsage term gender ID
 ## 1    3500 100 110  6      22   40      F 34
 ## 2    3500  96 111 26      22   40      F 34
 ## 3    3500  95 102 46      22   40      F 34</code></pre>
-<pre class="r"><code># gave functions that had a moms age of 22 and gender of female</code></pre>
-<pre class="r"><code>### arrange() function
-# put the dataframe in a certain order according to a variable
-head(fdo %&gt;% arrange(desc(birthwt), desc(term)))</code></pre>
+</div>
+<div id="arrange-function" class="section level2">
+<h2>Arrange Function</h2>
+<p>The data frame orgnized into a certain order according to variable using the arrange() function.</p>
+<pre class="r"><code>head(fdo %&gt;% arrange(desc(birthwt), desc(term)))</code></pre>
 <pre><code>##   birthwt bpd  ad no momsage term gender ID
 ## 1    4200  97 133 68      26   41      M 25
 ## 2    3650  94 107 25      27   41      M  1
@@ -152,9 +160,11 @@ head(fdo %&gt;% arrange(desc(birthwt), desc(term)))</code></pre>
 ## 4    3500  95 102 46      23   41      M 18
 ## 5    3600  84 116 35      25   41      F 14
 ## 6    3600  97 112 53      25   41      F 14</code></pre>
-<pre class="r"><code>### select() function
-# chose only a few columns to look at a time
-head(fdo %&gt;% dplyr::select(birthwt, momsage, ad))</code></pre>
+</div>
+<div id="select-function" class="section level2">
+<h2>Select Function</h2>
+<p>The select function allows a few columns to be pulled from a data set at a time.</p>
+<pre class="r"><code>head(fdo %&gt;% dplyr::select(birthwt, momsage, ad))</code></pre>
 <pre><code>##    birthwt momsage  ad
 ## 5     2900      27  97
 ## 6     3500      23 110
@@ -162,9 +172,19 @@ head(fdo %&gt;% dplyr::select(birthwt, momsage, ad))</code></pre>
 ## 8     3500      26 110
 ## 9     2700      22 110
 ## 10    2950      26 100</code></pre>
-<pre class="r"><code>### group_by() function
-# according to birthweight, pulled the mean and standard deviation of the birthweights
-head(fdo %&gt;% group_by(birthwt) %&gt;% summarize(mean_bwt = mean(birthwt, na.rm = T), sd_bwt = sd(birthwt, na.rm=T)))</code></pre>
+<pre class="r"><code>head(fdo %&gt;% dplyr::select(-gender, - no, -ID))</code></pre>
+<pre><code>##    birthwt bpd  ad momsage term
+## 5     2900  89  97      27   40
+## 6     3500 100 110      23   41
+## 7     3500 100 110      22   40
+## 8     3500 100 110      26   39
+## 9     2700  90 110      22   40
+## 10    2950  92 100      26   37</code></pre>
+</div>
+<div id="group-by-function" class="section level2">
+<h2>Group By Function</h2>
+<p>The group_by() function is used to create subsets of the data. The summarize() funcion allows summary statistics to be calculated.</p>
+<pre class="r"><code>head(fdo %&gt;% group_by(birthwt) %&gt;% summarize(mean_bwt = mean(birthwt, na.rm = T), sd_bwt = sd(birthwt, na.rm=T)))</code></pre>
 <pre><code>## # A tibble: 6 x 3
 ##   birthwt mean_bwt sd_bwt
 ##     &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;
@@ -174,35 +194,56 @@ head(fdo %&gt;% group_by(birthwt) %&gt;% summarize(mean_bwt = mean(birthwt, na.r
 ## 4    2950     2950      0
 ## 5    3050     3050     NA
 ## 6    3100     3100      0</code></pre>
+</div>
+<div id="plots" class="section level2">
+<h2>Plots</h2>
+<pre class="r"><code>plot1 &lt;- fdo %&gt;% group_by(birthwt, momsage) %&gt;%
+  summarize(mean_bwt=mean(birthwt, na.rm=T),
+              sd_bwt=sd(birthwt, na.rm=T), n=n()) %&gt;%
+  ggplot(aes(momsage,mean_bwt))+geom_bar(stat=&quot;identity&quot;)
+plot1 + ggtitle(&quot;Birthweight&quot;) + ylab(&quot;Mean Birthweight (g)&quot;) + xlab(&quot;Mom&#39;s Age (years)&quot;)</code></pre>
 <p><img src="/Project1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$term))+
+  geom_point()+
+  ggtitle(&quot;Birthweight vs Term&quot;)+
+  xlab(&quot;Birthweight&quot;)+ ylab(&quot;Term&quot;)+
+  facet_wrap(~fdo$momsage)</code></pre>
 <p><img src="/Project1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code># This plot shows that there is a general trend between the birthweight and head size of the babies
+# There is not an apparent trend with the birthweight or head size and what term the babies were born in, some of the low weight babies were born earlier except for one outlier
+ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$bpd, color = fdo$term))+
+  geom_point(stat = &quot;summary&quot;, fun.y=&quot;mean&quot;)+
+  ggtitle(&quot;Birthweight vs BPD by Term&quot;)+
+  xlab(&quot;Birthweight&quot;)+ ylab(&quot;BPD&quot;)</code></pre>
 <p><img src="/Project1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<pre class="r"><code>### summary functions
-# mean
-fdo %&gt;% summarize(mean_bwt = mean(birthwt),mean_bpd = mean(bpd), mean_ad = mean(ad),mean_momsage = mean(momsage), mean_term = mean(term))</code></pre>
+</div>
+<div id="summary-functions" class="section level2">
+<h2>Summary Functions</h2>
+<p>The summary functions allows the mean bithrweight, mean BPD, mean AD, mean age of the mother, and mean term that the baby was born to be calculated.xx</p>
+<pre class="r"><code>fdo %&gt;% summarize(mean_bwt = mean(birthwt),mean_bpd = mean(bpd), mean_ad = mean(ad),mean_momsage = mean(momsage), mean_term = mean(term))</code></pre>
 <pre><code>##   mean_bwt mean_bpd mean_ad mean_momsage mean_term
 ## 1     3200  92.6875  107.75     25.64583  39.47917</code></pre>
-<pre class="r"><code># sd
-fdo %&gt;% summarize(sd_bwt = sd(birthwt))</code></pre>
+<p>The summarize function is used here to calculate the standard deviation of each of the previous variables.</p>
+<pre class="r"><code>fdo %&gt;% summarize(sd_bwt = sd(birthwt))</code></pre>
 <pre><code>##    sd_bwt
 ## 1 329.248</code></pre>
 <pre class="r"><code>fdo %&gt;% summarize(sd_bwt = sd(birthwt), sd_bpd = sd(bpd), sd_ad = sd(ad), sd_momsage = sd(momsage), sd_term=sd(term))</code></pre>
 <pre><code>##    sd_bwt   sd_bpd    sd_ad sd_momsage  sd_term
 ## 1 329.248 3.573878 6.231355   2.128725 1.352532</code></pre>
-<pre class="r"><code># var
-fdo %&gt;% summarize(var_bwt = var(birthwt),var_bpd = var(bpd), var_ad = var(ad), var_momsage = var(momsage), var_term = var(term))</code></pre>
+<p>The summarize function is used here to calculate the variation of each of the variables.</p>
+<pre class="r"><code>fdo %&gt;% summarize(var_bwt = var(birthwt),var_bpd = var(bpd), var_ad = var(ad), var_momsage = var(momsage), var_term = var(term))</code></pre>
 <pre><code>##    var_bwt  var_bpd   var_ad var_momsage var_term
 ## 1 108404.3 12.77261 38.82979    4.531472 1.829344</code></pre>
-<pre class="r"><code># min
-fdo %&gt;% summarize(min_bwt = min(birthwt), min_bpd = min(bpd), min_ad = min(ad), min_momsage = min(momsage), min_term = min(term))</code></pre>
+<p>The summarize function is used here to calculate the minimum value of each variable.</p>
+<pre class="r"><code>fdo %&gt;% summarize(min_bwt = min(birthwt), min_bpd = min(bpd), min_ad = min(ad), min_momsage = min(momsage), min_term = min(term))</code></pre>
 <pre><code>##   min_bwt min_bpd min_ad min_momsage min_term
 ## 1    2700      84     97          22       36</code></pre>
-<pre class="r"><code># max
-fdo %&gt;% summarize(max_bwt = max(birthwt), max_bpd = max(bpd), max_ad = max(ad), max_momsage = max(momsage), max_term = max(term))</code></pre>
+<p>The summarize function is used here to calculate the maximum value of each variable.</p>
+<pre class="r"><code>fdo %&gt;% summarize(max_bwt = max(birthwt), max_bpd = max(bpd), max_ad = max(ad), max_momsage = max(momsage), max_term = max(term))</code></pre>
 <pre><code>##   max_bwt max_bpd max_ad max_momsage max_term
 ## 1    4200     100    133          31       42</code></pre>
-<pre class="r"><code># n_dinstinct
-fdo %&gt;% summarize(n_distinct(birthwt))</code></pre>
+<p>The n_distinct() function count the number of unique values in a variable.</p>
+<pre class="r"><code>fdo %&gt;% summarize(n_distinct(birthwt))</code></pre>
 <pre><code>##   n_distinct(birthwt)
 ## 1                  14</code></pre>
 <pre class="r"><code>fdo %&gt;% summarize(n_distinct(bpd))</code></pre>
@@ -217,8 +258,8 @@ fdo %&gt;% summarize(n_distinct(birthwt))</code></pre>
 <pre class="r"><code>fdo %&gt;% summarize(n_distinct(term))</code></pre>
 <pre><code>##   n_distinct(term)
 ## 1                7</code></pre>
-<pre class="r"><code># cor
-fdo %&gt;% summarize(cor(birthwt, term))</code></pre>
+<p>The cor() function shows the correlation between two variables.</p>
+<pre class="r"><code>fdo %&gt;% summarize(cor(birthwt, term))</code></pre>
 <pre><code>##   cor(birthwt, term)
 ## 1          0.3487821</code></pre>
 <pre class="r"><code>fdo %&gt;% summarize(cor(birthwt, bpd))</code></pre>
@@ -230,8 +271,11 @@ fdo %&gt;% summarize(cor(birthwt, term))</code></pre>
 <pre class="r"><code>fdo %&gt;% summarize(cor(birthwt, momsage))</code></pre>
 <pre><code>##   cor(birthwt, momsage)
 ## 1            -0.1411602</code></pre>
-<pre class="r"><code>### covariance
-fdo%&gt;%select_if(is.numeric)%&gt;%cov</code></pre>
+</div>
+<div id="covariance" class="section level2">
+<h2>Covariance</h2>
+<p>Covariance</p>
+<pre class="r"><code>fdo%&gt;%select_if(is.numeric)%&gt;%cov()</code></pre>
 <pre><code>##              birthwt         bpd           ad           no     momsage
 ## birthwt 108404.25532 480.8510638 1223.4042553 -2054.255319 -98.9361702
 ## bpd        480.85106  12.7726064    3.3882979   -17.942819  -1.5598404
@@ -318,6 +362,7 @@ ggplot()+geom_bar(aes(y=variation,x=1:5),stat=&quot;identity&quot;)+xlab(&quot;&
 yeet &lt;-data.frame(PC1=PCA$scores[,1], PC2=PCA$scores[,2])
 ggplot(yeet,aes(PC1, PC2))+geom_point()</code></pre>
 <p><img src="/Project1_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+</div>
 
               <hr>
               <div class="related-posts">
