@@ -11,6 +11,14 @@ output: html_document
 <h2>Survival from Malignant Melanoma</h2>
 <p><a href="https://vincentarelbundock.github.io/Rdatasets/doc/boot/melanoma.html" class="uri">https://vincentarelbundock.github.io/Rdatasets/doc/boot/melanoma.html</a></p>
 <p>This data contains information collected from 205 patients from Department of Plastic Surgery, University Hospital of Odense, Denmark. Patients had melanoma tumors surgically removed. The thickness of the tumor was measured and whether or not the tumor was ulcerated was recorded.</p>
+<pre class="r"><code>head(MM)</code></pre>
+<pre><code>##   time          status    sex age year thickness   ulcer
+## 1   10 Unrelated Death   male  76 1972      6.76 present
+## 2   30 Unrelated Death   male  56 1968      0.65  absent
+## 3   35           Alive   male  41 1977      1.34  absent
+## 4   99 Unrelated Death female  71 1968      2.90  absent
+## 5  185  Melanoma Death   male  52 1965     12.08 present
+## 6  204  Melanoma Death   male  28 1971      4.84 present</code></pre>
 </div>
 <div id="filter-function" class="section level2">
 <h2>Filter Function</h2>
@@ -101,13 +109,13 @@ output: html_document
 <h2>Plots</h2>
 <pre class="r"><code>plot1 &lt;- ggplot(MM, aes(age,thickness, color = sex))+geom_point(size = 3)
 plot1 + ggtitle(&quot;Age and Tumor Thickness by Sex&quot;) + ylab(&quot;Tumor Thickness (mm)&quot;) + xlab(&quot;Age&quot;)</code></pre>
-<p><img src="/Project1_MM_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/Project1_MM_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(MM, aes(status, fill = sex))+
   geom_bar(position = &quot;dodge&quot;) +
   facet_wrap(~MM$year) + 
   ggtitle(&quot;Patient Status by Sex and Year&quot;) + xlab(&quot;Patient Status&quot;) +
   theme(axis.text.x = element_text(angle=45, hjust=1))</code></pre>
-<p><img src="/Project1_MM_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="/Project1_MM_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="summary-functions" class="section level2">
 <h2>Summary Functions</h2>

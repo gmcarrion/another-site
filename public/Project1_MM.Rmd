@@ -21,6 +21,9 @@ https://vincentarelbundock.github.io/Rdatasets/doc/boot/melanoma.html
 
 This data contains information collected from 205 patients from Department of Plastic Surgery, University Hospital of Odense, Denmark.  Patients had melanoma tumors surgically removed.  The thickness of the tumor was measured and whether or not the tumor was ulcerated was recorded.
 
+```{R}
+head(MM)
+```
 
 ## Filter Function
 The data set was filtered so that only observations from the male gender were pulled.  Then the data set was filtered so that only obersavtions with female patients over the age of 50 were pulled.

@@ -59,7 +59,7 @@ What you write in the fields is completely customizable if you know some Markdow
       <guid>/project1_mm/</guid>
       <description>Survival from Malignant Melanomahttps://vincentarelbundock.github.io/Rdatasets/doc/boot/melanoma.html
 This data contains information collected from 205 patients from Department of Plastic Surgery, University Hospital of Odense, Denmark. Patients had melanoma tumors surgically removed. The thickness of the tumor was measured and whether or not the tumor was ulcerated was recorded.
-Filter FunctionThe data set was filtered so that only observations from the male gender were pulled. Then the data set was filtered so that only obersavtions with female patients over the age of 50 were pulled.</description>
+head(MM)## time status sex age year thickness ulcer## 1 10 Unrelated Death male 76 1972 6.76 present## 2 30 Unrelated Death male 56 1968 0.</description>
     </item>
     
     <item>
