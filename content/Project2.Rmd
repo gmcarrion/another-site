@@ -15,8 +15,8 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 ```
-This is a data frame with 1295 rows and 10 columns.  The data set contains information about the mortality outcomes for females suffering myocardial infarction. A myocradial infarction is a heart attack and I will refer to it as that throughout the project. It contains a binary variable, 'outcome' in which the patient either lived or died. The data set contains 2 numerical variable,'age' the age of the onset of theheart attack, and 'yronset' the year of the onset of the heart attack. The data set contains 6 categorical variables 'premi' previous myocardial infarctions, 'smstat' smoking status, 'diabetes' diabetes, 'highbp' high blood pressure, 'hichol' high cholesterol, 'angina' angina, 'stroke' if they previouly has a stroke. Each categorical variable has levels 'y', yes, 'n', no, 'nk', not known.  Smoking status has the categories 
 
+This is a data frame with 1295 rows and 10 columns.  The data set contains information about the mortality outcomes for females suffering myocardial infarction. A myocradial infarction is a heart attack and I will refer to it as that throughout the project. It contains a binary variable, 'outcome' in which the patient either lived or died. The data set contains 2 numerical variable,'age' the age of the onset of theheart attack, and 'yronset' the year of the onset of the heart attack. The data set contains 6 categorical variables 'premi' previous myocardial infarctions, 'smstat' smoking status, 'diabetes' diabetes, 'highbp' high blood pressure, 'hichol' high cholesterol, 'angina' angina, 'stroke' if they previouly has a stroke. Each categorical variable has levels 'y', yes, 'n', no, 'nk', not known.  Smoking status has the categories 
 ```{R}
 class_diag<-function(probs,truth){
   tab<-table(factor(probs>.5,levels=c("FALSE","TRUE")),truth)
@@ -37,16 +37,21 @@ class_diag<-function(probs,truth){
   data.frame(acc,sens,spec,ppv,auc)
 } 
 ```
-This is a data frame with 1295 rows and 10 columns.  
-The data set contains information about the mortality outcomes for females suffering myocardial infarction.
-A myocradial infarction is a heart attack and I will refer to it as that throughout the project.
-It contains a bindary variable, 'outcome' in which the patient either lived or died.
-The data set contains 2 numerical variable,'age' the age of the onset of the myocardial infarction, and 'yronset' the year of the onset of the myocardial infarction.
-The data set contains 6 categorical variables 'premi' previous myocardial infarctions, 'smstat' smoking status, 'diabetes' diabetes, 'highbp' high blood pressure, 'hichol' high cholesterol, 'angina' angina, 'stroke' if they previouly has a stroke.
-Each categorical variable has levels 'y', yes, 'n', no, 'nk', not known.
 
+## Reshaping the data frame
+All "nk" outcomes were removed from the data.
 ```{R}
 mifem %>% group_by(outcome) %>% summarize(count = n())
+
+df <- mifem %>% subset(premi!="nk") %>% subset(smstat!="nk") %>% subset(diabetes!= "nk") %>% subset(highbp!="nk") %>% subset(hichol!="nk") %>% subset(angina!="nk") %>% subset(stroke!="nk")
+
+df %>% group_by(premi)%>% summarize(count = n())
+df %>% group_by(smstat)%>% summarize(count = n())
+df %>% group_by(diabetes)%>% summarize(count = n())
+df %>% group_by(highbp)%>% summarize(count = n())
+df %>% group_by(hichol)%>% summarize(count = n())
+df %>% group_by(angina)%>% summarize(count = n())
+df %>% group_by(stroke)%>% summarize(count = n())
 ```
 
 ```{R}
@@ -64,13 +69,14 @@ data <- d5 %>% mutate(outcome=recode(outcome,
 head(data)
 ```
 
+## MANOVA
 ```{R}
-man1<-manova(cbind(age,yronset)~smstat, data=data)
+man1<-manova(cbind(age,yronset)~smstat, data=df)
 summary(man1)
 summary.aov(man1)
-data%>%group_by(smstat)%>%summarize(mean(age),mean(yronset))
-pairwise.t.test(data$age,data$smstat, p.adj="none")
-pairwise.t.test(data$yronset,data$smstat, p.adj="none")
+df%>%group_by(smstat)%>%summarize(mean(age),mean(yronset))
+pairwise.t.test(df$age,df$smstat, p.adj="none")
+pairwise.t.test(df$yronset,df$smstat, p.adj="none")
 ```
 A one-way multivariate analysis of variance (MANOVA) was conducted to determine the effect of the smoking status of a female patient who had a heart attack (ex smoker (x), nonsmoker(n), current smoker (c)) on two dependent variables (age and the year the heart attack happened). 
 Significant differences were found among the three smoking statuses on the two dependent measures, Pillai trace = .073, pseudo F(4, 2320) = 21.983, p < 0.0001.
@@ -97,17 +103,17 @@ The assumptions of the MANOVA were likely met because the samples were random an
 ```{R}
 # Randomization PERMANOVA
 library(vegan)
-dists<-data %>% dplyr::select(age, yronset) %>% dist()
-adonis(dists~smstat,data=data)
+dists<-df %>% dplyr::select(age, yronset) %>% dist()
+adonis(dists~smstat,data=df)
 
 SST <- sum(dists^2)/150
-SSW <-data %>% group_by(smstat)%>% dplyr::select(age,yronset) %>%
+SSW <-df %>% group_by(smstat)%>% dplyr::select(age,yronset) %>%
   do(d=dist(.[2:3],"euclidean"))%>%ungroup()%>%
   summarize(sum(d[[1]]^2)/50 + sum(d[[2]]^2)/50+ sum(d[[3]]^2)/50)%>%pull
 F_obs<-((SST-SSW)/2)/(SSW/147) 
 
 Fs<-replicate(1000,{
-  new<-data%>%mutate(smstat=sample(smstat)) 
+  new<-df%>%mutate(smstat=sample(smstat)) 
   SSW<-new%>%group_by(smstat)%>%dplyr::select(age,yronset)%>%
     do(d=dist(.[2:3],"euclidean"))%>%ungroup()%>%
     summarize(sum(d[[1]]^2)/50 + sum(d[[2]]^2)/50+ sum(d[[3]]^2)/50)%>%pull
@@ -133,14 +139,14 @@ head(data)
 ```
 
 ```{R}
-data$age_c <- data$age - mean(data$age)
-mean(data$age) #60.77988
+df$age_c <- df$age - mean(df$age)
+mean(df$age) #60.68255
 ```
 
 ```{R}
-fit <- lm(age_c ~ premi * diabetes, data=data)
+fit <- lm(age_c ~ premi * diabetes, data=df)
 summary(fit)
-ggplot(data, aes(y=age, x=premi,group=diabetes))+
+ggplot(df, aes(y=age, x=premi,group=diabetes))+
   geom_point(aes(color=diabetes))+
   geom_smooth(method="lm",se=F,fullrange=T,aes(color=diabetes))+
   theme(legend.position=c(.9,.19))+xlab("premi")
@@ -184,16 +190,6 @@ coeftest(fit, vcov = vcovHC(fit))
 # The R squared value of the linear regression was 0.01673.  About 1.673% of the variation in age is explained by the model.
 ```
 
-```{R}
-samp_distn<-replicate(5000, {
-  boot_dat<-boot_dat<-data[sample(nrow(data),replace=TRUE),]
-  fit_b <- lm(age_c ~ premi * diabetes, data=boot_dat)
-  coef(fit_b)
-    })
-samp_distn%>%t%>%as.data.frame%>%summarize_all(sd)
-```
-The robust standard errors and the bootstrap standard errors were very similar (within 1% of each other).
-The p-values of the diabetes and the interaction of the two models were very similar, while the p-values of the intercept and the premi variable were much lower than on the bootstrapped data than on the robust model.
 
 ```{R}
 # LOGISTIC REGRESSION

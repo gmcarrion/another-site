@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Gina Carrion" />
-    <meta name="description" content="Describe your website">
+    <meta name="description" content="website description">
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
     <title>Project 2</title>
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.64.1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/css/main.css" />
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -44,7 +44,7 @@
         
         <li><a href="/projects/">PROJECTS</a></li>
         
-        <li><a href="/resume.pdf/">RESUME</a></li>
+        <li><a href="/raresume.pdf/">RESUME</a></li>
         
       
       </ul>
@@ -91,19 +91,60 @@
   auc&lt;- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
   data.frame(acc,sens,spec,ppv,auc)
 } </code></pre>
-<p>This is a data frame with 1295 rows and 10 columns.<br />
-The data set contains information about the mortality outcomes for females suffering myocardial infarction.
-A myocradial infarction is a heart attack and I will refer to it as that throughout the project.
-It contains a bindary variable, ‘outcome’ in which the patient either lived or died.
-The data set contains 2 numerical variable,‘age’ the age of the onset of the myocardial infarction, and ‘yronset’ the year of the onset of the myocardial infarction.
-The data set contains 6 categorical variables ‘premi’ previous myocardial infarctions, ‘smstat’ smoking status, ‘diabetes’ diabetes, ‘highbp’ high blood pressure, ‘hichol’ high cholesterol, ‘angina’ angina, ‘stroke’ if they previouly has a stroke.
-Each categorical variable has levels ‘y’, yes, ‘n’, no, ‘nk’, not known.</p>
+<div id="reshaping-the-data-frame" class="section level2">
+<h2>Reshaping the data frame</h2>
+<p>All “nk” outcomes were removed from the data.</p>
 <pre class="r"><code>mifem %&gt;% group_by(outcome) %&gt;% summarize(count = n())</code></pre>
 <pre><code>## # A tibble: 2 x 2
 ##   outcome count
 ##   &lt;fct&gt;   &lt;int&gt;
 ## 1 live      974
 ## 2 dead      321</code></pre>
+<pre class="r"><code>df &lt;- mifem %&gt;% subset(premi!=&quot;nk&quot;) %&gt;% subset(smstat!=&quot;nk&quot;) %&gt;% subset(diabetes!= &quot;nk&quot;) %&gt;% subset(highbp!=&quot;nk&quot;) %&gt;% subset(hichol!=&quot;nk&quot;) %&gt;% subset(angina!=&quot;nk&quot;) %&gt;% subset(stroke!=&quot;nk&quot;)
+
+df %&gt;% group_by(premi)%&gt;% summarize(count = n())</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   premi count
+##   &lt;fct&gt; &lt;int&gt;
+## 1 y       255
+## 2 n       794</code></pre>
+<pre class="r"><code>df %&gt;% group_by(smstat)%&gt;% summarize(count = n())</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   smstat count
+##   &lt;fct&gt;  &lt;int&gt;
+## 1 c        349
+## 2 x        245
+## 3 n        455</code></pre>
+<pre class="r"><code>df %&gt;% group_by(diabetes)%&gt;% summarize(count = n())</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   diabetes count
+##   &lt;fct&gt;    &lt;int&gt;
+## 1 y          203
+## 2 n          846</code></pre>
+<pre class="r"><code>df %&gt;% group_by(highbp)%&gt;% summarize(count = n())</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   highbp count
+##   &lt;fct&gt;  &lt;int&gt;
+## 1 y        683
+## 2 n        366</code></pre>
+<pre class="r"><code>df %&gt;% group_by(hichol)%&gt;% summarize(count = n())</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   hichol count
+##   &lt;fct&gt;  &lt;int&gt;
+## 1 y        426
+## 2 n        623</code></pre>
+<pre class="r"><code>df %&gt;% group_by(angina)%&gt;% summarize(count = n())</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   angina count
+##   &lt;fct&gt;  &lt;int&gt;
+## 1 y        405
+## 2 n        644</code></pre>
+<pre class="r"><code>df %&gt;% group_by(stroke)%&gt;% summarize(count = n())</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   stroke count
+##   &lt;fct&gt;  &lt;int&gt;
+## 1 y        124
+## 2 n        925</code></pre>
 <pre class="r"><code>d1 &lt;- subset(mifem, premi!=&quot;nk&quot;)
 d2 &lt;- subset(d1, smstat!= &quot;nk&quot;)
 d3 &lt;- subset(d2, diabetes!= &quot;nk&quot;)
@@ -123,52 +164,55 @@ head(data)</code></pre>
 ## 4       1  63      85     n      n        n      y      n      n      n
 ## 5       0  68      85     d      n        n      y      y      y      y
 ## 6       0  46      85     n      c        n      y     nk     nk      n</code></pre>
-<pre class="r"><code>man1&lt;-manova(cbind(age,yronset)~smstat, data=data)
+</div>
+<div id="manova" class="section level2">
+<h2>MANOVA</h2>
+<pre class="r"><code>man1&lt;-manova(cbind(age,yronset)~smstat, data=df)
 summary(man1)</code></pre>
 <pre><code>##             Df   Pillai approx F num Df den Df    Pr(&gt;F)    
-## smstat       2 0.073034   21.983      4   2320 &lt; 2.2e-16 ***
-## Residuals 1160                                              
+## smstat       2 0.070714   19.169      4   2092 1.687e-15 ***
+## Residuals 1046                                              
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>summary.aov(man1)</code></pre>
 <pre><code>##  Response age :
 ##               Df Sum Sq Mean Sq F value    Pr(&gt;F)    
-## smstat         2   4086 2042.88  43.755 &lt; 2.2e-16 ***
-## Residuals   1160  54160   46.69                      
+## smstat         2   3652 1825.96   38.69 &lt; 2.2e-16 ***
+## Residuals   1046  49365   47.19                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ##  Response yronset :
 ##               Df Sum Sq Mean Sq F value Pr(&gt;F)
-## smstat         2   20.8 10.3877  1.6265 0.1971
-## Residuals   1160 7408.5  6.3867</code></pre>
-<pre class="r"><code>data%&gt;%group_by(smstat)%&gt;%summarize(mean(age),mean(yronset))</code></pre>
+## smstat         2    9.2  4.5883  0.7292 0.4826
+## Residuals   1046 6582.0  6.2926</code></pre>
+<pre class="r"><code>df%&gt;%group_by(smstat)%&gt;%summarize(mean(age),mean(yronset))</code></pre>
 <pre><code>## # A tibble: 3 x 3
 ##   smstat `mean(age)` `mean(yronset)`
 ##   &lt;fct&gt;        &lt;dbl&gt;           &lt;dbl&gt;
-## 1 c             58.1            88.7
-## 2 x             61.9            89.0
-## 3 n             62.2            88.8</code></pre>
-<pre class="r"><code>pairwise.t.test(data$age,data$smstat, p.adj=&quot;none&quot;)</code></pre>
+## 1 c             58.0            88.6
+## 2 x             61.9            88.9
+## 3 n             62.1            88.7</code></pre>
+<pre class="r"><code>pairwise.t.test(df$age,df$smstat, p.adj=&quot;none&quot;)</code></pre>
 <pre><code>## 
 ##  Pairwise comparisons using t tests with pooled SD 
 ## 
-## data:  data$age and data$smstat 
+## data:  df$age and df$smstat 
 ## 
 ##   c       x   
-## x 4.2e-12 -   
-## n &lt; 2e-16 0.59
+## x 4.6e-11 -   
+## n 4.6e-16 0.68
 ## 
 ## P value adjustment method: none</code></pre>
-<pre class="r"><code>pairwise.t.test(data$yronset,data$smstat, p.adj=&quot;none&quot;)</code></pre>
+<pre class="r"><code>pairwise.t.test(df$yronset,df$smstat, p.adj=&quot;none&quot;)</code></pre>
 <pre><code>## 
 ##  Pairwise comparisons using t tests with pooled SD 
 ## 
-## data:  data$yronset and data$smstat 
+## data:  df$yronset and df$smstat 
 ## 
-##   c     x    
-## x 0.092 -    
-## n 0.793 0.123
+##   c    x   
+## x 0.25 -   
+## n 0.83 0.31
 ## 
 ## P value adjustment method: none</code></pre>
 <p>A one-way multivariate analysis of variance (MANOVA) was conducted to determine the effect of the smoking status of a female patient who had a heart attack (ex smoker (x), nonsmoker(n), current smoker (c)) on two dependent variables (age and the year the heart attack happened).
@@ -191,11 +235,11 @@ Significant differences were found among the three smoking statuses on the two d
 The assumptions of the MANOVA were likely met because the samples were random and independent, there was a large sample size (1163 observations), however, the equal variance assumption may not have been met because the pairwise comparisons did not all yield significant effects.</p>
 <pre class="r"><code># Randomization PERMANOVA
 library(vegan)
-dists&lt;-data %&gt;% dplyr::select(age, yronset) %&gt;% dist()
-adonis(dists~smstat,data=data)</code></pre>
+dists&lt;-df %&gt;% dplyr::select(age, yronset) %&gt;% dist()
+adonis(dists~smstat,data=df)</code></pre>
 <pre><code>## 
 ## Call:
-## adonis(formula = dists ~ smstat, data = data) 
+## adonis(formula = dists ~ smstat, data = df) 
 ## 
 ## Permutation: free
 ## Number of permutations: 999
@@ -203,19 +247,19 @@ adonis(dists~smstat,data=data)</code></pre>
 ## Terms added sequentially (first to last)
 ## 
 ##             Df SumsOfSqs MeanSqs F.Model      R2 Pr(&gt;F)    
-## smstat       2      4107 2053.27  38.685 0.06253  0.001 ***
-## Residuals 1160     61568   53.08         0.93747           
-## Total     1162     65675                 1.00000           
+## smstat       2      3661 1830.55  34.224 0.06142  0.001 ***
+## Residuals 1046     55947   53.49         0.93858           
+## Total     1048     59608                 1.00000           
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>SST &lt;- sum(dists^2)/150
-SSW &lt;-data %&gt;% group_by(smstat)%&gt;% dplyr::select(age,yronset) %&gt;%
+SSW &lt;-df %&gt;% group_by(smstat)%&gt;% dplyr::select(age,yronset) %&gt;%
   do(d=dist(.[2:3],&quot;euclidean&quot;))%&gt;%ungroup()%&gt;%
   summarize(sum(d[[1]]^2)/50 + sum(d[[2]]^2)/50+ sum(d[[3]]^2)/50)%&gt;%pull
 F_obs&lt;-((SST-SSW)/2)/(SSW/147) 
 
 Fs&lt;-replicate(1000,{
-  new&lt;-data%&gt;%mutate(smstat=sample(smstat)) 
+  new&lt;-df%&gt;%mutate(smstat=sample(smstat)) 
   SSW&lt;-new%&gt;%group_by(smstat)%&gt;%dplyr::select(age,yronset)%&gt;%
     do(d=dist(.[2:3],&quot;euclidean&quot;))%&gt;%ungroup()%&gt;%
     summarize(sum(d[[1]]^2)/50 + sum(d[[2]]^2)/50+ sum(d[[3]]^2)/50)%&gt;%pull
@@ -244,32 +288,32 @@ head(data)</code></pre>
 ## 6       0  46      85     n      c        n      y     nk     nk      n</code></pre>
 <pre class="r"><code># mean center numeric variables
 # mean center age</code></pre>
-<pre class="r"><code>data$age_c &lt;- data$age - mean(data$age)
-mean(data$age) #60.77988</code></pre>
-<pre><code>## [1] 60.77988</code></pre>
-<pre class="r"><code>fit &lt;- lm(age_c ~ premi * diabetes, data=data)
+<pre class="r"><code>df$age_c &lt;- df$age - mean(df$age)
+mean(df$age) #60.68255</code></pre>
+<pre><code>## [1] 60.68255</code></pre>
+<pre class="r"><code>fit &lt;- lm(age_c ~ premi * diabetes, data=df)
 summary(fit)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = age_c ~ premi * diabetes, data = data)
+## lm(formula = age_c ~ premi * diabetes, data = df)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -27.229  -3.229   1.920   5.130   8.920 
+## -27.333  -3.496   2.082   5.082   9.082 
 ## 
 ## Coefficients:
-##                  Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)       -0.6995     0.2616  -2.674 0.007601 ** 
-## premid             2.1482     0.5511   3.898 0.000103 ***
-## diabetesd          1.4586     0.6240   2.338 0.019571 *  
-## premid:diabetesd  -1.8171     1.1253  -1.615 0.106648    
+##                  Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)        1.1962     0.8677   1.379   0.1683  
+## premin            -0.3824     1.0563  -0.362   0.7174  
+## diabetesn          0.4545     1.0079   0.451   0.6521  
+## premin:diabetesn  -2.0331     1.2059  -1.686   0.0921 .
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 7.03 on 1159 degrees of freedom
-## Multiple R-squared:  0.01673,    Adjusted R-squared:  0.01418 
-## F-statistic: 6.572 on 3 and 1159 DF,  p-value: 0.0002094</code></pre>
-<pre class="r"><code>ggplot(data, aes(y=age, x=premi,group=diabetes))+
+## Residual standard error: 7.05 on 1045 degrees of freedom
+## Multiple R-squared:  0.02045,    Adjusted R-squared:  0.01764 
+## F-statistic: 7.274 on 3 and 1045 DF,  p-value: 7.874e-05</code></pre>
+<pre class="r"><code>ggplot(df, aes(y=age, x=premi,group=diabetes))+
   geom_point(aes(color=diabetes))+
   geom_smooth(method=&quot;lm&quot;,se=F,fullrange=T,aes(color=diabetes))+
   theme(legend.position=c(.9,.19))+xlab(&quot;premi&quot;)</code></pre>
@@ -290,7 +334,7 @@ bptest(fit)</code></pre>
 ##  studentized Breusch-Pagan test
 ## 
 ## data:  fit
-## BP = 16.134, df = 3, p-value = 0.001064</code></pre>
+## BP = 14.996, df = 3, p-value = 0.00182</code></pre>
 <pre class="r"><code>ggplot()+geom_histogram(aes(resids),bins=20)</code></pre>
 <p><img src="/Project2_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code># This shows that the data is not normal because it is skewed to the left.</code></pre>
@@ -304,11 +348,11 @@ bptest(fit)</code></pre>
 <pre><code>## 
 ## t test of coefficients:
 ## 
-##                  Estimate Std. Error t value  Pr(&gt;|t|)    
-## (Intercept)      -0.69955    0.27844 -2.5124   0.01213 *  
-## premid            2.14824    0.50613  4.2445 2.366e-05 ***
-## diabetesd         1.45863    0.62803  2.3225   0.02038 *  
-## premid:diabetesd -1.81707    0.93585 -1.9416   0.05242 .  
+##                  Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)       1.19623    0.59882  1.9976  0.04601 *
+## premin           -0.38244    0.84423 -0.4530  0.65064  
+## diabetesn         0.45455    0.74377  0.6111  0.54124  
+## premin:diabetesn -2.03309    0.99664 -2.0399  0.04161 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code># I reran the regression using heteroskedasticity robust standard errors which, although the p-values were raised, the 
@@ -318,16 +362,6 @@ bptest(fit)</code></pre>
 
 
 # The R squared value of the linear regression was 0.01673.  About 1.673% of the variation in age is explained by the model.</code></pre>
-<pre class="r"><code>samp_distn&lt;-replicate(5000, {
-  boot_dat&lt;-boot_dat&lt;-data[sample(nrow(data),replace=TRUE),]
-  fit_b &lt;- lm(age_c ~ premi * diabetes, data=boot_dat)
-  coef(fit_b)
-    })
-samp_distn%&gt;%t%&gt;%as.data.frame%&gt;%summarize_all(sd)</code></pre>
-<pre><code>##   (Intercept)    premid diabetesd premid:diabetesd
-## 1   0.2812778 0.5151218  0.616896        0.9415545</code></pre>
-<p>The robust standard errors and the bootstrap standard errors were very similar (within 1% of each other).
-The p-values of the diabetes and the interaction of the two models were very similar, while the p-values of the intercept and the premi variable were much lower than on the bootstrapped data than on the robust model.</p>
 <pre class="r"><code># LOGISTIC REGRESSION
 fitlogreg1&lt;-glm(outcome~ age + premi, data=data, family=&quot;binomial&quot;)
 summary(fitlogreg1)</code></pre>
@@ -408,7 +442,7 @@ mifem %&gt;% group_by(outcome) %&gt;% summarize(count = n())</code></pre>
 <pre class="r"><code>datalogreg$logit&lt;-predict(fitlogreg1,type=&quot;link&quot;)
 datalogreg%&gt;%ggplot()+geom_density(aes(logit,color=outcome,fill=outcome), alpha=.4)+
   theme(legend.position=c(.85,.85))+geom_vline(xintercept=0)+xlab(&quot;predictor (logit)&quot;)</code></pre>
-<p><img src="/Project2_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="/Project2_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>#install.packages(&quot;plotROC&quot;)
 library(plotROC)
 
@@ -417,7 +451,7 @@ ROCplot1 &lt;- datalogreg %&gt;% ggplot() + geom_roc(aes(d = outcome, m = probb)
                                       n.cuts = 0) + geom_segment(aes(x = 0, xend = 1, y = 0, yend = 1),
                                                                  lty = 2)
 ROCplot1</code></pre>
-<p><img src="/Project2_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="/Project2_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <pre class="r"><code>class_diag(probb, datalogreg$outcome)</code></pre>
 <pre><code>##         acc sens spec       ppv       auc
 ## 1 0.8039553    1    0 0.8039553 0.6103997</code></pre>
@@ -518,6 +552,7 @@ diags%&gt;%summarize_all(mean)</code></pre>
 ## 1 0.8039935    1    0 0.8039935 0.6232144</code></pre>
 <p>The out of sample accuracy from the 10-fold CV is 0.7777778 while the accuracy from the logistic regression is 0.8039553
 The 10-fold CV had a lower accuracy, meaning a better fit.</p>
+</div>
 
               <hr>
               <div class="related-posts">

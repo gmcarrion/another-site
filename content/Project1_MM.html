@@ -1,0 +1,201 @@
+---
+title: "Data Wrangling and Data Exploration RStudio Project"
+author: "Gina Carrion"
+date: "02/16/2020"
+output: html_document
+---
+
+
+
+<div id="survival-from-malignant-melanoma" class="section level2">
+<h2>Survival from Malignant Melanoma</h2>
+<p><a href="https://vincentarelbundock.github.io/Rdatasets/doc/boot/melanoma.html" class="uri">https://vincentarelbundock.github.io/Rdatasets/doc/boot/melanoma.html</a></p>
+<p>This data contains information collected from 205 patients from Department of Plastic Surgery, University Hospital of Odense, Denmark. Patients had melanoma tumors surgically removed. The thickness of the tumor was measured and whether or not the tumor was ulcerated was recorded.</p>
+</div>
+<div id="filter-function" class="section level2">
+<h2>Filter Function</h2>
+<p>The data set was filtered so that only observations from the male gender were pulled. Then the data set was filtered so that only obersavtions with female patients over the age of 50 were pulled.</p>
+<pre class="r"><code>head(MM %&gt;% filter(sex == &quot;male&quot;))</code></pre>
+<pre><code>##   time          status  sex age year thickness   ulcer
+## 1   10 Unrelated Death male  76 1972      6.76 present
+## 2   30 Unrelated Death male  56 1968      0.65  absent
+## 3   35           Alive male  41 1977      1.34  absent
+## 4  185  Melanoma Death male  52 1965     12.08 present
+## 5  204  Melanoma Death male  28 1971      4.84 present
+## 6  210  Melanoma Death male  77 1972      5.16 present</code></pre>
+<pre class="r"><code>head(MM %&gt;% filter(sex == &quot;female&quot; &amp; age &gt; 50))</code></pre>
+<pre><code>##   time          status    sex age year thickness   ulcer
+## 1   99 Unrelated Death female  71 1968      2.90  absent
+## 2  232 Unrelated Death female  60 1974      3.22 present
+## 3  279  Melanoma Death female  68 1971      7.41 present
+## 4  295  Melanoma Death female  53 1969      4.19 present
+## 5  355 Unrelated Death female  64 1972      0.16 present
+## 6  386  Melanoma Death female  68 1965      3.87 present</code></pre>
+</div>
+<div id="arrange-function" class="section level2">
+<h2>Arrange Function</h2>
+<p>The arrange() function orginzes data into a certain order by a variable. In this case, the data is organized in descending order of thickness and then by age. The data can also be organized by the survival time of the patient after the operation by gender.</p>
+<pre class="r"><code>head(MM %&gt;% arrange(desc(thickness)))</code></pre>
+<pre><code>##   time          status    sex age year thickness   ulcer
+## 1 1312  Melanoma Death female  65 1970     17.42 present
+## 2 1041  Melanoma Death   male  68 1967     14.66  absent
+## 3  667  Melanoma Death female  89 1968     13.85 present
+## 4  232  Melanoma Death   male  49 1968     12.88 present
+## 5 1958           Alive female  69 1972     12.88  absent
+## 6  493 Unrelated Death   male  72 1971     12.56 present</code></pre>
+<pre class="r"><code>head(MM %&gt;% arrange(age))</code></pre>
+<pre><code>##   time         status    sex age year thickness   ulcer
+## 1 3385          Alive female   4 1968      2.74  absent
+## 2 3776          Alive   male  12 1967      7.09 present
+## 3  469 Melanoma Death female  14 1969      2.42 present
+## 4 1710          Alive   male  15 1973      0.58  absent
+## 5  858 Melanoma Death female  16 1967      3.56  absent
+## 6 1062 Melanoma Death   male  19 1966      3.87 present</code></pre>
+<pre class="r"><code>head(MM %&gt;% arrange(sex, time))</code></pre>
+<pre><code>##   time          status    sex age year thickness   ulcer
+## 1   99 Unrelated Death female  71 1968      2.90  absent
+## 2  232 Unrelated Death female  60 1974      3.22 present
+## 3  279  Melanoma Death female  68 1971      7.41 present
+## 4  295  Melanoma Death female  53 1969      4.19 present
+## 5  355 Unrelated Death female  64 1972      0.16 present
+## 6  386  Melanoma Death female  68 1965      3.87 present</code></pre>
+</div>
+<div id="select-function" class="section level2">
+<h2>Select Function</h2>
+<p>The select function allows a few columns to be pulled from a data set at a time.</p>
+<pre class="r"><code>head(MM %&gt;% dplyr::select(time, status, sex))</code></pre>
+<pre><code>##   time          status    sex
+## 1   10 Unrelated Death   male
+## 2   30 Unrelated Death   male
+## 3   35           Alive   male
+## 4   99 Unrelated Death female
+## 5  185  Melanoma Death   male
+## 6  204  Melanoma Death   male</code></pre>
+<pre class="r"><code>head(MM %&gt;% dplyr::select(-age, - year, -thickness, -ulcer))</code></pre>
+<pre><code>##   time          status    sex
+## 1   10 Unrelated Death   male
+## 2   30 Unrelated Death   male
+## 3   35           Alive   male
+## 4   99 Unrelated Death female
+## 5  185  Melanoma Death   male
+## 6  204  Melanoma Death   male</code></pre>
+</div>
+<div id="group-by-function" class="section level2">
+<h2>Group By Function</h2>
+<p>The group_by() function is used to create subsets of the data. The summarize() funcion allows summary statistics to be calculated. One example shows the mean and standard deviation of the survival time of patients based on gender. Another example shows the mean and standard deviation of the patients age based on the patients status.</p>
+<pre class="r"><code>head(MM %&gt;% group_by(sex) %&gt;% summarize(mean_time = mean(time, na.rm = T), sd_time = sd(time, na.rm=T)))</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   sex    mean_time sd_time
+##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+## 1 female     2283.   1090.
+## 2 male       1946.   1148.</code></pre>
+<pre class="r"><code>head(MM %&gt;% group_by(status) %&gt;% summarize(mean_age = mean(age, na.rm = T), sd_age = sd(age, na.rm = T)))</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   status          mean_age sd_age
+##   &lt;chr&gt;              &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Alive               50.0   15.9
+## 2 Melanoma Death      55.1   17.9
+## 3 Unrelated Death     65.3   10.9</code></pre>
+</div>
+<div id="plots" class="section level2">
+<h2>Plots</h2>
+<pre class="r"><code>plot1 &lt;- ggplot(MM, aes(age,thickness, color = sex))+geom_point(size = 3)
+plot1 + ggtitle(&quot;Age and Tumor Thickness by Sex&quot;) + ylab(&quot;Tumor Thickness (mm)&quot;) + xlab(&quot;Age&quot;)</code></pre>
+<p><img src="/Project1_MM_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(MM, aes(status, fill = sex))+
+  geom_bar(position = &quot;dodge&quot;) +
+  facet_wrap(~MM$year) + 
+  ggtitle(&quot;Patient Status by Sex and Year&quot;) + xlab(&quot;Patient Status&quot;) +
+  theme(axis.text.x = element_text(angle=45, hjust=1))</code></pre>
+<p><img src="/Project1_MM_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="summary-functions" class="section level2">
+<h2>Summary Functions</h2>
+<p>The summary functions allows the mean survival time, age, and tumor thickness to be calculated.</p>
+<pre class="r"><code>MM %&gt;% summarize(mean_time = mean(time),mean_age = mean(age), mean_thick = mean(thickness))</code></pre>
+<pre><code>##   mean_time mean_age mean_thick
+## 1    2152.8 52.46341   2.919854</code></pre>
+<p>The summarize function is used here to calculate the standard deviation of each of the numeric variables.</p>
+<pre class="r"><code>MM %&gt;% summarize(sd_time = sd(time), sd_age = sd(age), sd_thick = sd(thickness))</code></pre>
+<pre><code>##    sd_time   sd_age sd_thick
+## 1 1122.061 16.67171 2.959433</code></pre>
+<p>The summarize function is used here to calculate the variation of each of the variables.</p>
+<pre class="r"><code>MM %&gt;% summarize(var_time = var(time),var_age = var(age), var_thick = var(thickness))</code></pre>
+<pre><code>##   var_time var_age var_thick
+## 1  1259020 277.946  8.758242</code></pre>
+<p>The summarize function is used here to calculate the minimum value of each variable.</p>
+<pre class="r"><code>MM %&gt;% summarize(min_time = min(time), min_age = min(age), min_thick = min(thickness), min_year = min(year))</code></pre>
+<pre><code>##   min_time min_age min_thick min_year
+## 1       10       4       0.1     1962</code></pre>
+<p>The summarize function is used here to calculate the maximum value of each variable.</p>
+<pre class="r"><code>MM %&gt;% summarize(max_time = max(time), max_age = max(age), max_thick = max(thickness), max_year = max(year))</code></pre>
+<pre><code>##   max_time max_age max_thick max_year
+## 1     5565      95     17.42     1977</code></pre>
+<p>The n_distinct() function count the number of unique values in a variable.</p>
+<pre class="r"><code>MM %&gt;% summarize(n_distinct(time))</code></pre>
+<pre><code>##   n_distinct(time)
+## 1              194</code></pre>
+<pre class="r"><code>MM %&gt;% summarize(n_distinct(status))</code></pre>
+<pre><code>##   n_distinct(status)
+## 1                  3</code></pre>
+<pre class="r"><code>MM %&gt;% summarize(n_distinct(sex))</code></pre>
+<pre><code>##   n_distinct(sex)
+## 1               2</code></pre>
+<pre class="r"><code>MM %&gt;% summarize(n_distinct(age))</code></pre>
+<pre><code>##   n_distinct(age)
+## 1              70</code></pre>
+<pre class="r"><code>MM %&gt;% summarize(n_distinct(year))</code></pre>
+<pre><code>##   n_distinct(year)
+## 1               13</code></pre>
+<pre class="r"><code>MM %&gt;% summarize(n_distinct(thickness))</code></pre>
+<pre><code>##   n_distinct(thickness)
+## 1                    64</code></pre>
+<pre class="r"><code>MM %&gt;% summarize(n_distinct(ulcer))</code></pre>
+<pre><code>##   n_distinct(ulcer)
+## 1                 2</code></pre>
+<p>The cor() function shows the correlation between two variables.</p>
+<pre class="r"><code>MM %&gt;% summarize(cor(age, time))</code></pre>
+<pre><code>##   cor(age, time)
+## 1     -0.3015179</code></pre>
+<pre class="r"><code>MM %&gt;% summarize(cor(age, thickness))</code></pre>
+<pre><code>##   cor(age, thickness)
+## 1           0.2124798</code></pre>
+<pre class="r"><code>MM %&gt;% summarize(cor(time, thickness))</code></pre>
+<pre><code>##   cor(time, thickness)
+## 1           -0.2354087</code></pre>
+</div>
+<div id="covariance" class="section level2">
+<h2>Covariance</h2>
+<p>Cov() function shows the covariance between two variables.</p>
+<pre class="r"><code>MM%&gt;%select_if(is.numeric)%&gt;%cov()</code></pre>
+<pre><code>##                   time          age         year   thickness
+## time      1259020.1412 -5640.397059 -1403.077451 -781.712824
+## age         -5640.3971   277.945959     8.082377   10.483500
+## year        -1403.0775     8.082377     6.633525   -1.016386
+## thickness    -781.7128    10.483500    -1.016386    8.758242</code></pre>
+</div>
+<div id="correlation" class="section level2">
+<h2>Correlation</h2>
+<p>The cor() function calculates the correlation between any two variables. Variables with a high correlation have values close to 1.</p>
+<pre class="r"><code>MM%&gt;%select_if(is.numeric)%&gt;% cor()%&gt;%round(2)</code></pre>
+<pre><code>##            time   age  year thickness
+## time       1.00 -0.30 -0.49     -0.24
+## age       -0.30  1.00  0.19      0.21
+## year      -0.49  0.19  1.00     -0.13
+## thickness -0.24  0.21 -0.13      1.00</code></pre>
+</div>
+<div id="eigenvalues" class="section level2">
+<h2>Eigenvalues</h2>
+<p>The eigen vectors show the direction that the data has the most variance.</p>
+<pre class="r"><code>eig1&lt;-MM%&gt;%select(time, age, thickness)%&gt;%cor%&gt;%eigen()
+eig1</code></pre>
+<pre><code>## eigen() decomposition
+## $values
+## [1] 1.5016091 0.8018189 0.6965720
+## 
+## $vectors
+##            [,1]       [,2]       [,3]
+## [1,]  0.6053831  0.2823588 -0.7441672
+## [2,] -0.5901351 -0.4681481 -0.6577065
+## [3,] -0.5340897  0.8373236 -0.1167791</code></pre>
+</div>

@@ -1,0 +1,127 @@
+---
+title: "Data Wrangling and Data Exploration RStudio Project"
+author: "Gina Carrion"
+date: "02/16/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyverse)
+library(boot)
+data("melanoma")
+MM1 <- melanoma
+MM <- MM1 %>% mutate(sex = recode(sex, `0` = "female", `1` = "male")) %>% 
+  mutate(status = recode(status, `1` = "Melanoma Death", `2` = "Alive", `3` = "Unrelated Death")) %>%
+  mutate(ulcer = recode(ulcer, `0` = "absent", `1` = "present"))
+```
+## Survival from Malignant Melanoma
+https://vincentarelbundock.github.io/Rdatasets/doc/boot/melanoma.html
+
+This data contains information collected from 205 patients from Department of Plastic Surgery, University Hospital of Odense, Denmark.  Patients had melanoma tumors surgically removed.  The thickness of the tumor was measured and whether or not the tumor was ulcerated was recorded.
+
+
+## Filter Function
+The data set was filtered so that only observations from the male gender were pulled.  Then the data set was filtered so that only obersavtions with female patients over the age of 50 were pulled.
+```{R}
+head(MM %>% filter(sex == "male"))
+head(MM %>% filter(sex == "female" & age > 50))
+```
+
+## Arrange Function
+The arrange() function orginzes data into a certain order by a variable.  In this case, the data is organized in descending order of thickness and then by age.  The data can also be organized by the survival time of the patient after the operation by gender. 
+```{R}
+head(MM %>% arrange(desc(thickness)))
+head(MM %>% arrange(age))
+head(MM %>% arrange(sex, time))
+```
+
+## Select Function
+The select function allows a few columns to be pulled from a data set at a time.
+```{R}
+head(MM %>% dplyr::select(time, status, sex))
+head(MM %>% dplyr::select(-age, - year, -thickness, -ulcer))
+```
+
+## Group By Function
+The group_by() function is used to create subsets of the data.  The summarize() funcion allows summary statistics to be calculated.  One example shows the mean and standard deviation of the survival time of patients based on gender.  Another example shows the mean and standard deviation of the patients age based on the patients status.  
+```{R}
+head(MM %>% group_by(sex) %>% summarize(mean_time = mean(time, na.rm = T), sd_time = sd(time, na.rm=T)))
+head(MM %>% group_by(status) %>% summarize(mean_age = mean(age, na.rm = T), sd_age = sd(age, na.rm = T)))
+```
+## Plots
+
+```{r}
+plot1 <- ggplot(MM, aes(age,thickness, color = sex))+geom_point(size = 3)
+plot1 + ggtitle("Age and Tumor Thickness by Sex") + ylab("Tumor Thickness (mm)") + xlab("Age")
+```
+
+```{r}
+ggplot(MM, aes(status, fill = sex))+
+  geom_bar(position = "dodge") +
+  facet_wrap(~MM$year) + 
+  ggtitle("Patient Status by Sex and Year") + xlab("Patient Status") +
+  theme(axis.text.x = element_text(angle=45, hjust=1))
+```
+
+
+## Summary Functions
+The summary functions allows the mean survival time, age, and tumor thickness to be calculated.
+```{R}
+MM %>% summarize(mean_time = mean(time),mean_age = mean(age), mean_thick = mean(thickness))
+```
+The summarize function is used here to calculate the standard deviation of each of the numeric variables.
+```{R}
+MM %>% summarize(sd_time = sd(time), sd_age = sd(age), sd_thick = sd(thickness))
+```
+The summarize function is used here to calculate the variation of each of the variables.
+```{R}
+MM %>% summarize(var_time = var(time),var_age = var(age), var_thick = var(thickness))
+```
+The summarize function is used here to calculate the minimum value of each variable.
+```{R}
+MM %>% summarize(min_time = min(time), min_age = min(age), min_thick = min(thickness), min_year = min(year))
+```
+The summarize function is used here to calculate the maximum value of each variable.
+```{R}
+MM %>% summarize(max_time = max(time), max_age = max(age), max_thick = max(thickness), max_year = max(year))
+```
+The n_distinct() function count the number of unique values in a variable.
+```{R}
+MM %>% summarize(n_distinct(time))
+MM %>% summarize(n_distinct(status))
+MM %>% summarize(n_distinct(sex))
+MM %>% summarize(n_distinct(age))
+MM %>% summarize(n_distinct(year))
+MM %>% summarize(n_distinct(thickness))
+MM %>% summarize(n_distinct(ulcer))
+```
+The cor() function shows the correlation between two variables.
+```{R}
+MM %>% summarize(cor(age, time))
+MM %>% summarize(cor(age, thickness))
+MM %>% summarize(cor(time, thickness))
+```
+
+## Covariance
+Cov() function shows the covariance between two variables.
+```{R}
+MM%>%select_if(is.numeric)%>%cov()
+```
+
+## Correlation
+The cor() function calculates the correlation between any two variables.  Variables with a high correlation have values close to 1.
+```{R}
+MM%>%select_if(is.numeric)%>% cor()%>%round(2)
+```
+
+## Eigenvalues
+The eigen vectors show the direction that the data has the most variance.
+```{R}
+eig1<-MM%>%select(time, age, thickness)%>%cor%>%eigen()
+eig1
+```
+
+
+

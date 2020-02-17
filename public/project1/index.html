@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Gina Carrion" />
-    <meta name="description" content="Describe your website">
+    <meta name="description" content="website description">
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
     <title>Project1_gmc</title>
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.64.1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/css/main.css" />
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -44,7 +44,7 @@
         
         <li><a href="/projects/">PROJECTS</a></li>
         
-        <li><a href="/resume.pdf/">RESUME</a></li>
+        <li><a href="/raresume.pdf/">RESUME</a></li>
         
       
       </ul>
@@ -292,11 +292,11 @@ ggplot(data = fdo, mapping = aes(x = fdo$birthwt, y = fdo$bpd, color = fdo$term)
 ## momsage  -0.7841312   -5.042110
 ## term      1.8293440    3.060727
 ## ID        3.0607270  227.425089</code></pre>
-<pre class="r"><code># corrleation
-# the columns with high correlation have values closer to 1, these values represent that the two variables are highly correlated
-# for example, babies with high birthweights tend to have larger heads
-# there is a negative correlation between birthweight and moms age which means that babies with higher birthweights were tpically born to younger moms
-fdo%&gt;%select_if(is.numeric)%&gt;% cor()%&gt;%round(2)</code></pre>
+</div>
+<div id="correlation" class="section level2">
+<h2>Correlation</h2>
+<p>The cor() function calculates the correlation between any two variables. Variables with a high correlation have values close to 1.</p>
+<pre class="r"><code>fdo%&gt;%select_if(is.numeric)%&gt;% cor()%&gt;%round(2)</code></pre>
 <pre><code>##         birthwt   bpd    ad    no momsage  term    ID
 ## birthwt    1.00  0.41  0.60 -0.21   -0.14  0.35  0.35
 ## bpd        0.41  1.00  0.15 -0.17   -0.21  0.07  0.14
@@ -305,9 +305,11 @@ fdo%&gt;%select_if(is.numeric)%&gt;% cor()%&gt;%round(2)</code></pre>
 ## momsage   -0.14 -0.21 -0.04  0.22    1.00 -0.27 -0.16
 ## term       0.35  0.07  0.10 -0.12   -0.27  1.00  0.15
 ## ID         0.35  0.14  0.22 -0.17   -0.16  0.15  1.00</code></pre>
-<pre class="r"><code>#eigenvalues
-# the eigen vectors show the direction that the data has the most variance
-eig1&lt;-fdo%&gt;%select(birthwt, bpd, term, ad, momsage)%&gt;%cor%&gt;%eigen()
+</div>
+<div id="eigenvalues" class="section level2">
+<h2>Eigenvalues</h2>
+<p>The eigen vectors show the direction that the data has the most variance</p>
+<pre class="r"><code>eig1&lt;-fdo%&gt;%select(birthwt, bpd, term, ad, momsage)%&gt;%cor%&gt;%eigen()
 eig1</code></pre>
 <pre><code>## eigen() decomposition
 ## $values
@@ -320,8 +322,10 @@ eig1</code></pre>
 ## [3,] -0.3706904 -0.47429467  0.56374741  0.4859185 -0.28931864
 ## [4,] -0.4782330  0.50061044  0.22776794 -0.4484836 -0.51736508
 ## [5,]  0.2903193  0.68508504  0.17240279  0.6399545 -0.08431337</code></pre>
-<pre class="r"><code>#PCA
-fdoPCA &lt;- fdo %&gt;% select(-no, -ID, -gender)
+</div>
+<div id="pca" class="section level2">
+<h2>PCA</h2>
+<pre class="r"><code>fdoPCA &lt;- fdo %&gt;% select(-no, -ID, -gender)
 head(fdoPCA)</code></pre>
 <pre><code>##    birthwt bpd  ad momsage term
 ## 5     2900  89  97      27   40
@@ -330,8 +334,8 @@ head(fdoPCA)</code></pre>
 ## 8     3500 100 110      26   39
 ## 9     2700  90 110      22   40
 ## 10    2950  92 100      26   37</code></pre>
-<pre class="r"><code># Scale the data 
-fdoPCA_scale&lt;-fdoPCA%&gt;%select_if(is.numeric)%&gt;%scale
+<p>Scaling the data</p>
+<pre class="r"><code>fdoPCA_scale&lt;-fdoPCA%&gt;%select_if(is.numeric)%&gt;%scale
 PCA &lt;- princomp(fdoPCA_scale)
 summary(PCA, loadings=T)</code></pre>
 <pre><code>## Importance of components:
@@ -347,10 +351,10 @@ summary(PCA, loadings=T)</code></pre>
 ## ad       0.478  0.501  0.228 -0.448 -0.517
 ## momsage -0.290  0.685  0.172  0.640       
 ## term     0.371 -0.474  0.564  0.486 -0.289</code></pre>
-<pre class="r"><code># convert eigenvector to eigen value
-eigvalue &lt;- PCA$sdev^2</code></pre>
-<pre class="r"><code># this shows the proportion of variation of each principle component
-variation=round(eigvalue/sum(eigvalue),2) </code></pre>
+<p>The eigenvector was converted to an eigen value.</p>
+<pre class="r"><code>eigvalue &lt;- PCA$sdev^2</code></pre>
+<p>this shows the proportion of variation of each principle component</p>
+<pre class="r"><code>variation=round(eigvalue/sum(eigvalue),2) </code></pre>
 <pre class="r"><code># deciding how many principal components to keep
 # Based on the plot, I will keep to PCs
 ggplot()+geom_bar(aes(y=variation,x=1:5),stat=&quot;identity&quot;)+xlab(&quot;&quot;)+geom_path(aes(y=variation,x=1:5))+

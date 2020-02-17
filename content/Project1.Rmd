@@ -12,6 +12,7 @@ data("secher")
 library(HH)
 data("birthweight")
 birthweight
+library(dplyr)
 library(tidyverse)
 ```
 
@@ -141,43 +142,43 @@ Covariance
 fdo%>%select_if(is.numeric)%>%cov()
 ```
 
+## Correlation
+The cor() function calculates the correlation between any two variables.  Variables with a high correlation have values close to 1.
 ```{R}
-# corrleation
-# the columns with high correlation have values closer to 1, these values represent that the two variables are highly correlated
-# for example, babies with high birthweights tend to have larger heads
-# there is a negative correlation between birthweight and moms age which means that babies with higher birthweights were tpically born to younger moms
 fdo%>%select_if(is.numeric)%>% cor()%>%round(2)
 ```
 
+## Eigenvalues
+The eigen vectors show the direction that the data has the most variance
 ```{R}
-#eigenvalues
-# the eigen vectors show the direction that the data has the most variance
 eig1<-fdo%>%select(birthwt, bpd, term, ad, momsage)%>%cor%>%eigen()
 eig1
 ```
 
+## PCA
+
 ```{R}
-#PCA
 fdoPCA <- fdo %>% select(-no, -ID, -gender)
 head(fdoPCA)
 ```
 
+Scaling the data
 ```{R}
-# Scale the data 
 fdoPCA_scale<-fdoPCA%>%select_if(is.numeric)%>%scale
 PCA <- princomp(fdoPCA_scale)
 summary(PCA, loadings=T)
 ```
 
+The eigenvector was converted to an eigen value.
 ```{R}
-# convert eigenvector to eigen value
 eigvalue <- PCA$sdev^2
 ```
 
+this shows the proportion of variation of each principle component
 ```{R}
-# this shows the proportion of variation of each principle component
 variation=round(eigvalue/sum(eigvalue),2) 
 ```
+
 
 ```{R}
 # deciding how many principal components to keep

@@ -1,16 +1,15 @@
 ---
-name: Marie
-surname: Curie
-position: "Professor"
-address: "School of Physics & Chemistry, École Normale Supérieure"
-phone: +1 22 3333 4444
-www: mariecurie.com
-email: "Marie.Curie@ens.fr"
-twitter: mariecurie
+name: Gina
+surname: Carrion
+position: "Student"
+address: "701 W. 28th St. #418, Austin TX, 78705"
+phone: +1 214 604 7449
+www: g-m-c.netlify.com
+email: "ginacarrion@utexas.edu"
 github: mariecurie
 linkedin: mariecurie
 date: "`r format(Sys.time(), '%B %Y')`"
-output: vitae::hyndman
+output: vitae::awesomecv
 ---
 
 ```{r setup, include=FALSE}
