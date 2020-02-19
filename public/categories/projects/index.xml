@@ -12,12 +12,12 @@
     
     
     <item>
-      <title>Projects</title>
+      <title>R Studio Projects</title>
       <link>/projects/</link>
       <pubDate>Sun, 02 Oct 2016 22:55:05 -0400</pubDate>
       
       <guid>/projects/</guid>
-      <description>Projects Here are some projects I have been working on:
+      <description>RStudio Projects Here are some projects I have been working on:
   Project 2
   Data Wrangling and Data Exploration RStudio Project
   </description>

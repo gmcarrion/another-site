@@ -24,17 +24,12 @@ theme = "hugo-sustain"
 
 ## Main Menu
 [[menu.main]]
-  name = "blog"
+  name = "Writing Samples"
   weight = 100
   identifier = "blog"
   url = "/blog/"
 [[menu.main]]
-  name = "projects"
+  name = "rstudio projects"
   identifier = "projects"
   weight = 200
   url = "/projects/"
-[[menu.main]]
-  name = "resume"
-  identifier = "resume"
-  weight = 300
-  url = "/raresume.pdf/"
